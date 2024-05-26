@@ -32,14 +32,14 @@ if (defined('LEPTON_PATH')) {
 
 // Checking Requirements
 
-$PRECHECK['LEPTON_VERSION']        = array(
-    'LEPTON_VERSION' => '7.0',
-    'OPERATOR' => '>='
-);
+$PRECHECK['LEPTON_VERSION'] = [
+    'LEPTON_VERSION' => '7.2',
+    'OPERATOR'       => '>='
+];
 
-$PRECHECK['ADDONS']      = array(
-	'lib_twig' => array(
-        'VERSION' => '3.0',
-        'OPERATOR' => '>='
-    )
-);
+$PRECHECK['ADDONS'] = [
+    'lib_twig' => [
+        'VERSION'   => '3.0',
+        'OPERATOR'  => '>='
+    ]
+];

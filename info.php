@@ -37,7 +37,7 @@ $template_name			= 'Talgos Theme';
 $template_function		= 'theme';
 $template_delete  		=  true;
 $template_version		= '1.2.8';
-$template_platform		= '7.x';
+$template_platform		= '7.2';
 $template_author		= 'LEPTON project';
 $template_license		= '<a href="https://gnu.org/licenses/gpl.html">GNU General Public License</a>';
 $template_license_terms	= '-';
