@@ -38,11 +38,13 @@ if (defined('LEPTON_PATH')) {
 
 
 $oREQUEST = LEPTON_request::getInstance();
+$database = LEPTON_database::getInstance();
+$TEXT = LEPTON_core::getGlobal("TEXT");
 
 // input validation on $_GET
 $input_fields = [
-	'page_id'		=> ['type' => 'integer+', 'default' => -1],
-	'section_id'	=> ['type' => 'integer+', 'default' => -1]
+	'page_id'		=> ['type' => 'integer', 'default' => -1],
+	'section_id'	=> ['type' => 'integer', 'default' => -1]
 ];
 
 $valid_fields = $oREQUEST->testGetValues($input_fields);
@@ -55,7 +57,7 @@ $display_details = true;
 $admin = LEPTON_admin::getInstance();
 
 	// Get permissions
-	if ( ! $admin->get_page_permission($page_id,'admin'))
+	if (! $admin->get_page_permission($page_id,'admin'))
 	{
 		$admin->print_error($MESSAGE['PAGES_INSUFFICIENT_PERMISSIONS']);
 	}
@@ -146,7 +148,7 @@ if ( !empty($all_sections) )
 				}
 
 				ob_start();
-				require(LEPTON_PATH.'/modules/'.$module.'/modify.php');
+				require LEPTON_PATH.'/modules/'.$module.'/modify.php';
 				$section['content'] = ob_get_clean();
 			}
 		}
@@ -171,7 +173,6 @@ else
 	$_SESSION['last_edit_section'] = 0;
 }
 
-
 // Collect vars
 $page_values = [
     'page'                  => $current_page,
@@ -185,12 +186,9 @@ $page_values = [
     'allowedPageSettings'   => ( (false == $bHasAdminPrivilegs) ? LEPTON_admin::getUserPermission("page_settings") : true ),
     'all_pages'             => $all_pages,
     'all_sections'          => $all_sections,
-    'display_details'       => $display_details
+    'display_details'       => $display_details,
+    'oTALG'                 => talgos::getInstance() // TALGOS enhancement
 ];
-
-// TALGOS enhancement
-$oTALG = talgos::getInstance();
-$page_values['oTALG'] = $oTALG;
 
 // get TWIG engine
 $oTWIG = lib_twig_box::getInstance();

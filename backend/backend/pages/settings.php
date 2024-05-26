@@ -61,7 +61,7 @@ $database->execute_query(
 	false
 );
 
-if(empty($aCurrentPageInfo)) 
+if (empty($aCurrentPageInfo)) 
 {
 	$admin->print_error($MESSAGE['PAGES_NOT_FOUND']);
 }

@@ -12,7 +12,7 @@
 tbody.initial_page tr {background:#fff;}
 
 tbody.initial_page td {width:33%;padding:5px;box-sizing:border-box;}
-tbody.initial_page td:nth-child(1) {padding: 5px;width:100%;font-weight: 300;}
+tbody.initial_page td:nth-child(1) {padding: 5px;width:20%;font-weight: 300;}
 
 tbody.initial_page input[type='text'] {border: 1px solid #999999;padding-left: 5px;width:100%;}
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
@@ -23,6 +23,9 @@ tbody.initial_page td:nth-child(1):before {content:'Benutzer: ';font-weight:bold
 tbody.initial_page td:nth-child(2):before {content:'Seite: ';}
 tbody.initial_page td:nth-child(3):before {content:'Optionale Parameter: ';}
 tbody.initial_page td, tbody.initial_page td:nth-child(1) {padding: 10px;}
+.ip_list_user { max-width: 200px; }
+.ip_list_select { max-width: 200px; }
+.ip_list_param { max-width: 120px; }
 }
 /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 @media only screen and (max-width: 580px) {

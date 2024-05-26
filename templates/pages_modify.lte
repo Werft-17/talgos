@@ -10,7 +10,6 @@
  */
  #}
 {% autoescape false %}
-<h3>Talgos</h3>
 <div class="container">
 	<h2>{{ HEADING.MODIFY_PAGE }}</h2>
 	<div class="page_modify_head">
@@ -29,7 +28,7 @@
 		{% endif %}
 		</div>
 	</div>
-	{% if(all_sections|length == 0) %}
+	{% if (all_sections|length == 0) %}
 	<div>&nbsp;</div>
 	{% else %}	
 		{% for section in all_sections %}

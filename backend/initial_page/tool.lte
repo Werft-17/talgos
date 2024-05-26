@@ -60,9 +60,9 @@
 					<tbody class="initial_page">
 					{% for data in aAllUsers %}
 						<tr>
-							<td>{{ data.user_id }} {{ data.username }}</td>
-							<td>{{ data.select }}</td>
-							<td><input class="param" type="text" name="param[{{ data.user_id }}]" value="{{ data.temp_info.page_param }}" /></td>
+							<td class="ip_list_user">{{ data.user_id }} {{ data.username }}</td>
+							<td class="ip_list_select">{{ data.select }}</td>
+							<td class="ip_list_param"><input class="param" type="text" name="param[{{ data.user_id }}]" value="{{ data.temp_info.page_param }}" /></td>
 						</tr>
 					{% endfor %}
 					</tbody>

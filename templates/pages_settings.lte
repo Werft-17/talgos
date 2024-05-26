@@ -18,10 +18,8 @@
 	<h2>{{ HEADING.MODIFY_PAGE_SETTINGS }}</h2>
 	<div class="page_modify_head">
 		<div class="page_modify_info">
-			{{ TEXT.CURRENT_PAGE }}: <b>{{ current_page.page_title }}</b> - ID: {{ current_page.page_id }}<br />
-			<!-- BEGIN show_modify_block -->
-				{{ MESSAGE.PAGES_LAST_MODIFIED }} {{ MODIFIED_BY }} ({{ MODIFIED_BY_USERNAME }}), {{ MODIFIED_WHEN }}
-			<!-- END show_modify_block -->
+			{{ TEXT.CURRENT_PAGE }}: <b>{{ page.page_title }}</b> - ID: {{ page.page_id }}<br />
+			{{ MESSAGE.PAGES_LAST_MODIFIED }} {{ MODIFIED_BY }} ({{ MODIFIED_BY_USERNAME }}), {{ MODIFIED_WHEN }}
 		</div>
 		<div class="page_modify_buttons">
 			<span class="button modify"><a href="{{ oTALG.alternative_url }}modify.php?page_id={{ PAGE_ID }}">{{ HEADING.MODIFY_PAGE }}</a></span>
@@ -39,13 +37,13 @@
 					<tr>
 						<td>{{ TEXT.PAGE_TITLE }}:</td>
 						<td>
-							<input type="text" name="page_title" value="{{ current_page.page_title }}" />
+							<input type="text" name="page_title" value="{{ page.page_title }}" />
 						</td>
 					</tr>
 					<tr>
 						<td>{{ TEXT.MENU_TITLE }}:</td>
 						<td>
-							<input type="text" name="menu_title" value="{{  current_page.menu_title }}" />
+							<input type="text" name="menu_title" value="{{ page.menu_title }}" />
 						</td>
 					</tr>
 					<tr>
@@ -64,13 +62,13 @@
 								<option value="{{ page.page_id }}" {% if page.page_id == current_page_id %}disabled="disabled"{% endif %} {% if page.page_id == parent_page_id %}selected='selected'{% endif %} >{% for i in 0..deep %}{% if i > 0 %}- {% endif %}{% endfor %}{{ page.menu_title }}</option>
 								{% import _self as pagelink %}
 								{% for subpage in page.subpages %}
-									{{ pagelink.parent_page_option( subpage, deep+1, current_page_id, parent_page_id) }}
+									{{ pagelink.parent_page_option(subpage, deep+1, current_page_id, parent_page_id) }}
 								{% endfor %}
 							{% endmacro %}
 							{# C2: page tree #}
 							{% import _self as pagelink %}
-							{% for page in all_pages %}
-								{{ pagelink.parent_page_option( page, 0, PAGE_ID, current_page.parent ) }}
+							{% for temp_page in all_pages %}
+								{{ pagelink.parent_page_option(temp_page, 0, PAGE_ID, page.parent ) }}
 							{% endfor %}
 							</select>
 						</td>
