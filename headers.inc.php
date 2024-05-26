@@ -10,28 +10,26 @@
  *
  *
  */
- 
 
-
-$mod_headers = array(
-    'backend' => array(
-        'css' => array(
-            array(
+$mod_headers = [
+    'backend' => [
+        'css' => [
+            [
                 'media' => 'all',
                 'file'  => 'modules/lib_jquery/jquery-ui/jquery-ui.min.css'
-            ),
-            array(
+            ],
+            [
                 'media' => 'all',
                 'file'  => 'templates/talgos/backend/backend/custom.css'
-            )
-        ),
-        'js' => array(
+            ]
+        ],
+        'js' => [
             'modules/lib_jquery/jquery-core/jquery-core.min.js',
             'modules/lib_jquery/jquery-core/jquery-migrate.min.js',
             'modules/lib_jquery/jquery-ui/jquery-ui.min.js'
-        )
-    )
-);
+        ]
+    ]
+];
 
 /**
  *  Keep in mind that EN is the default language of the "datepicker"
@@ -40,7 +38,7 @@ $mod_headers = array(
  *  as en - or the matching file for e.g. "NO", or "XN" doesn't exists.
  */
 $sTempDatePickerLang = lib_jquery::SetJQueryLanguage('datepicker');
-if( $sTempDatePickerLang != "en")
+if ($sTempDatePickerLang != "en")
 {
     $mod_headers["backend"]["js"][] = 'modules/lib_jquery/jquery-ui/i18n/datepicker-'.$sTempDatePickerLang.'.js';
 }
