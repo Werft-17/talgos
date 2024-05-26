@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  @template       Talgos  Backend-Theme
+ *  @template       Talgos Backend-Theme
  *  @version        see info.php of this template
  *  @author         LEPTON project and others for Algos theme, LEPTON project for Talgos theme
  *	@copyright      2010-2024 LEPTON Project 
@@ -36,7 +36,7 @@ $template_directory		= 'talgos';
 $template_name			= 'Talgos Theme';
 $template_function		= 'theme';
 $template_delete  		=  true;
-$template_version		= '1.2.8';
+$template_version		= '1.3.0';
 $template_platform		= '7.2';
 $template_author		= 'LEPTON project';
 $template_license		= '<a href="https://gnu.org/licenses/gpl.html">GNU General Public License</a>';

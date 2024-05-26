@@ -1,7 +1,7 @@
 <?php
 
 /**
- *  @template       Talgos  Backend-Theme
+ *  @template       Talgos Backend-Theme
  *  @version        see info.php of this template
  *  @author         LEPTON project and others for Algos theme, LEPTON project for Talgos theme
  *  @copyright      2010-2024 LEPTON Project 
