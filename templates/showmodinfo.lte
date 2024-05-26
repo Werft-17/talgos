@@ -1,0 +1,87 @@
+{#
+/**
+ * This file is part of LEPTON Core, released under the GNU GPL
+ * Please see LICENSE and COPYING files in your package for details, specially for terms and warranties.
+ *
+ * NOTICE:LEPTON CMS Package has several different licenses.
+ * Please see the individual license in the header of each single file or info.php of modules and templates.
+ *
+ * @author          LEPTON Project
+ * @copyright       2010-2024 LEPTON Project
+ * @link            https://lepton-cms.org
+ * @license         https://gnu.org/licenses/gpl-3.0.html
+ * @license_terms   please see LICENSE and COPYING files in your package
+ *
+ */
+#}
+
+<!-- start twig content -->
+{% autoescape false %}
+
+<div class="container">
+	<h2>{{ TEXT.SHOW_MODINFO }}</h2>
+	<div class="fl_right">
+		<img src="{{ IMAGE_URL }}" alt="{{ HEADER }}" title="{{ HEADER }}" />
+	</div>
+	<h3>{{ HEADER }}</h3>
+	{% if DESCRIPTION|trim %}
+		<p>{{ DESCRIPTION }}</p>
+	{% endif %}
+
+	{% for info_key, info_value in INFO %}
+		{% if "spacer" in info_value|lower %}
+			<div class="{{ info_value }}"></div>
+		{% elseif info_value|trim %}
+			<div class="pad_line">
+				{% set info_key = info_key|upper %}
+				{% set key = info_key|replace({"MODULE_": ""}) %}
+				{% if key == "FUNCTION" %}{% set key = "TYPE" %}
+				{% elseif key == "PLATFORM" %}{% set key = "DESIGNED_FOR" %}
+				{% endif %}
+				
+				{% if TEXT[ key ] is defined && TEXT[ key ]|trim %}{{ TEXT[ key ] }}
+				{% elseif TEXT[ info_key ] is defined && TEXT[ info_key ]|trim %}{{ TEXT[ info_key ] }}
+				{% else %}{{ info_key }}
+				{% endif %}:
+				{{ info_value|raw }}
+			</div>
+		{% endif %}
+	{% endfor %}
+
+	{% for button_key, button_attributes in BUTTONS %}
+		{% if button_attributes.AVAILABLE is defined %}
+			{% if button_attributes.AVAILABLE is same as(true) %}
+				{% set use_button_key = "INFO_" ~ button_key %}
+			{% else %}
+				{% set use_button_key = "INFO_" ~ button_key ~ "_NO" %}
+			{% endif %}
+			{% if button_attributes.TITLE is defined && button_attributes.TITLE|trim %}
+				{% set title = button_attributes.TITLE %}
+			{% elseif THIS.language[ use_button_key ] is defined %}
+				{% set title = THIS.language[ use_button_key ] %}
+			{% elseif TEXT[ use_button_key ] is defined %}
+				{% set title = TEXT[ use_button_key ] %}
+			{% else %}
+				{% set title = button_key %}
+			{% endif %}
+			{% if button_attributes.AVAILABLE is same as(true) %}
+				<div class="pad_line">
+					<a href="{{ button_attributes.URL }}"
+						target="_blank"
+						alt="{{ title }}"
+						title="{{ title }}"
+					>{{ title }} &raquo;</a>
+				</div>
+			{% elseif button_attributes.AVAILABLE is same as(false) %}
+				<div class="pad_line">
+					<strong>{{ title }}</strong>
+				</div>
+			{% endif %}
+		{% endif %}
+	{% endfor %}
+  <div class="pad_tb">
+	<a href="javascript: history.go(-1)">&laquo; {{ TEXT.BACK }}</a>
+  </div>
+</div>
+{% endautoescape %}
+<!-- end twig content -->

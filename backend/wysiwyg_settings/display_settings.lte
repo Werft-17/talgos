@@ -1,0 +1,131 @@
+{#
+/**
+ * @module          Wysiwyg Settings Talgos Theme
+ * @author          LEPTON team
+ * @copyright       2010-2024 LEPTON team
+ * @link            https://lepton-cms.org
+ * @license         GNU General Public License 3 (see info.php)
+ * @license_terms   see license
+ *
+ */
+ #}
+
+{% autoescape false %}
+<div class="talgos_container">
+	<div id="module">
+		<div class="ui basic segment">
+			<h3 class="ui header">{{ oWS.module_name }}</h3>
+			<form class="ui form">	
+				<div class="submenu">
+					<ul>
+						<li><button class="menubutton" type="submit" formaction="{{ help_link }}" formtarget="_blank">{{ MENU.HELP }}</button></li>
+						<li><button class="menubutton" type="submit" name="show_info" value="show" title="show_info" formaction="{{ action_url }}" formmethod="post">INFO</button></li>
+					</ul>
+				</div>
+			</form>
+		</div>
+
+		{% if oWS.wysiwyg == 0 %}
+			<div class="spacer4"></div>
+			<div class="ui red message">{{ oWS.language.no_editor }}</div>
+			<div class="spacer2"></div>
+			<a href="{{ ADMIN_URL }}/admintools/index.php?leptoken={{ leptoken }}" class="ui orange button" type="submit">{{ TEXT.BACK }}</a>
+			<div class="spacer4"></div>
+		{% else %}
+			{% if message is defined %}
+				<div class="ui basic segment">
+					<div class="ui {% if message.STATUS is same as(true) %}info{% else %}warning{% endif %} message">{{ oWS.language[ message.MESSAGE_ID ] }}</div>
+				</div>
+			{% endif %}
+			
+			<div class="ui basic segment">
+				<form class="ui form" id="form_list" action="{{ oWS.action_url }}" method="post">
+					<input type="hidden" name="leptoken" value="{{ leptoken }}" />
+					<input type="hidden" name="id"   value="{{ oWS.editor_settings.id }}" />
+					<input type="hidden" name="editor"   value="{{ wysiwyg_editor }}" />
+					
+					<h3 class="ui header">{{ oWS.language.header1 }}: {{ editor_name|upper }}</h3>			
+					<div class="spacer2"></div>
+					
+					<div class="two fields">	
+						<div class="field">
+							{% if wysiwyg_editor == 'tinymce' or wysiwyg_editor == 'tinymce_cloud' %}
+								<label>{{ oWS.language.width }}</label>
+							{% else %}
+								<label>{{ oWS.language.width1 }}</label>
+							{% endif %}
+							<input type="text" name="width" value="{{ oWS.editor_settings.width }}" />
+						</div>
+						<div class="field">
+							<label>{{ oWS.language.height }}</label>
+							<input type="text" name="height" value="{{ oWS.editor_settings.height }}" />
+						</div>			
+					</div>
+					
+					<div class="spacer4"></div>
+					{% if wysiwyg_editor == 'tinymce' or wysiwyg_editor == 'tinymce_cloud' %}
+						<div class="three fields">	
+							<div class="field">
+								<label>{{ oWS.language.skin }}</label>
+								<select name="skin" class="ui fluid dropdown">
+									<option value="">{{ oWS.language.select }}</option>
+									{% for item in oWS.oES.skins %}
+										<option value ="{{ item }}" {% if oWS.editor_settings.skin == item %} selected="selected"{% endif %}>{{ item }}</option>
+									{% endfor %}
+								</select>
+							</div>
+							<div class="field">
+								<label>{{ oWS.language.css }}</label>
+								<select name="content_css" class="ui fluid dropdown">
+									<option value="">{{ oWS.language.select }}</option>
+									{% for item in oWS.oES.content_css %}
+										<option value ="{{ item }}" {% if oWS.editor_settings.content_css == item %} selected="selected"{% endif %}>{{ item }}</option>
+									{% endfor %}
+								</select>
+							</div>
+							<div class="field">
+								<label>{{ oWS.language.toolbar }}</label>
+								<select name="toolbar" class="ui fluid dropdown">
+									<option value="">{{ oWS.language.select }}</option>
+									{% for item in oWS.oES.toolbars|keys %}
+										<option value ="{{ item }}" {% if oWS.editor_settings.toolbar == item %} selected="selected"{% endif %}>{{ item }}</option>
+									{% endfor %}
+								</select>
+							</div>						
+						</div>
+					{% else %}
+						<div class="two fields">	
+							<div class="field">
+								<label>{{ oWS.language.skin }}</label>
+								<select name="skin" class="ui fluid dropdown">
+									<option value="">{{ oWS.language.select }}</option>
+									{% for item in oWS.oES.skins %}
+										<option value="{{ item }}" {% if oWS.editor_settings.skin == item %} selected="selected"{% endif %}>{{ item }}</option>
+									{% endfor %}
+								</select>
+							</div>
+							<div class="field">
+								<label>{{ oWS.language.toolbar }}</label>
+								<select name="toolbar" class="ui fluid dropdown">
+									<option value="">{{ oWS.language.select }}</option>
+									{% for item in oWS.oES.toolbars|keys %}
+										<option value="{{ item }}" {% if oWS.editor_settings.toolbar == item %} selected="selected"{% endif %}>{{ item }}</option>
+									{% endfor %}
+								</select>
+							</div>						
+						</div>
+					{% endif %}					
+
+
+							<div class="pad_tb">
+								<button class="save_section" type="submit" name="save_settings" value="{{ oWS.editor_settings.id }}">{{ TEXT.SAVE }}</button>
+								<input type="reset" id="reset" name="reset" value="{{ TEXT.RESET }}" />
+							</div>
+					<div class="ui basic segment">{{ display_editor }}</div>					
+				</form>
+			</div>			
+		{% endif %}
+	</div>
+</div>
+
+{% endautoescape %}

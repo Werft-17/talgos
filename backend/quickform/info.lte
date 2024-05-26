@@ -1,0 +1,47 @@
+{#
+/**
+ *
+ *	@module			quickform
+ *	@version		see info.php of this module
+ *	@authors		W. Studer, ISB
+ *	@copyright		2010-2024 W. Studer, ISB
+ *  @license        GNU General Public License (see info.php of this module)
+ *  @license terms  see info.php of this module
+ *  @platform       see info.php of this module
+ *
+ *  Based on Accordion module by ISB
+ **/
+ #}
+
+<!-- start twig content -->
+{% autoescape false %}
+
+			<div class="ui olive segment">
+				<h2 class="ui header">Module Info</h2>
+				<div class="ui basic segment">
+
+					<div class="spacer"></div>
+					<div class="ui grid">
+						<div class="one wide column"></div>
+						<div class="five wide column">
+							<img src="{{ image }}" class="module_icon" />
+						</div>
+						<div class="eight wide column custom_link">
+							<h3>{{ oQUICKFORM.module_name }}</h3>
+							<h4>{{ oQUICKFORM.module_description }}</h4>
+							<p> </p>
+							<p>{{ TEXT.VERSION }}: {{ oQUICKFORM.module_version }}</p>
+							<p>{{ TEXT.AUTHOR }}: {{ oQUICKFORM.module_author }}</p>
+							<p>GUID: {{ oQUICKFORM.module_guid }}</p>
+							<p> </p>
+							<p>{{ oQUICKFORM.module_license }}<br />{{ oQUICKFORM.module_license_terms }}</p>
+							<div class="spacer3"> </div>
+							<p><a href="{{ action }}"><input class="ui olive button" type="submit" value="{{ TEXT.BACK }}" /></a></p>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+{% endautoescape %}
+<!-- end twig content -->

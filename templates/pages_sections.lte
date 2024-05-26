@@ -1,0 +1,219 @@
+{#
+/**
+ *	@template		Talgos Backend Theme
+ *	@version		see info.php of this template
+ *	@author			LEPTON project and others for Algos theme, LEPTON project for Talgos theme
+ *	@copyright		2010-2024 LEPTON Project 
+ *	@license		GNU General Public License
+ *	@license terms	see info.php of this template
+ *	@platform		see info.php of this template
+ */
+ #}
+{% autoescape false %}
+
+<div class=" container">
+	<div class="jsadmin jcalendar hide"></div>
+	<h2>{{ HEADING.MANAGE_SECTIONS }}</h2>
+	<div class="page_modify_head">
+		<div class="page_modify_info">
+			{{ TEXT.CURRENT_PAGE }}: <b>{{ page.page_title }}</b> - ID: {{ page.page_id }}<br />
+			<!-- BEGIN show_modify_block -->
+				{{ MESSAGE.PAGES_LAST_MODIFIED }} {{ MODIFIED_BY }} ({{ MODIFIED_BY_USERNAME }}), {{ MODIFIED_WHEN }}
+			<!-- END show_modify_block -->
+		</div>
+		<div class="page_modify_buttons">
+			<span class="button modify"><a href="{{ oTALG.alternative_url }}modify.php?page_id={{ page.page_id }}">{{ HEADING.MODIFY_PAGE }}</a></span>
+		{% if  all_sections[0].module == 'menu_link' %} {% else %}
+			<span class="button settings"><a href="{{ oTALG.alternative_url }}settings.php?page_id={{ page.page_id }}">{{ TEXT.CHANGE_SETTINGS }}</a></span>
+		{% endif %}
+		</div>
+	</div>
+	<form id="manage_section" name="section_properties" action="{{ oTALG.alternative_url }}sections.php?page_id={{ page.page_id }}" method="post">
+	{# Message box for the callback messages #}
+		<div id="talgos_sections_messagebox">
+			<p id="talgos_sections_messagebox_message"></p>
+		</div>
+	{# end messagebox #}
+		<input type="hidden" name="job" value="add" />
+		<input type="hidden" name="page_id" value="{{ page.page_id }}" />
+		<input type="hidden" name="section_id" value="-2" />
+		<input type="hidden" name="leptoken" value="{{ leptoken }}" />
+		<table border="0" class="manage_sections" >
+			<thead>
+			<tr class="sections_list">
+				<td class="header_sections_list">{{ TEXT.TYPE }}</td>
+				{% if SECTION_BLOCKS == false %} {% else %}<td class="header_sections_list">{{ TEXT.BLOCK }}</td>{% endif %}
+				<td class="header_sections_list">{{ THEME.SECTION_NAME }}</td>
+				<td class="header_sections_list">{{ TEXT.PUBL_START_DATE }}</td>
+				<td class="header_sections_list">{{ TEXT.PUBL_END_DATE }}</td>
+				<td class="header_sections_list" colspan="3">{{ TEXT.ACTIONS }}</td>
+				<td class="header_sections_list">{{ THEME.SECTION_ID }}</td>
+			</tr>
+			</thead>
+
+			<tbody id="manage_section_table">
+{% if (noSectionsAvailable != "") %}
+    <tr>
+        <td class="header_sections_list" colspan="6">{{ noSectionsAvailable }}</td>
+    </tr>
+{% endif %}
+			{% for section in all_sections %}
+				<tr class="sectionrow" id="{{ section.section_id }}">
+					<td align="right" style="display:none;"></td>
+					
+					<td><div class="section_title">{{ TEXT.TYPE }}:</div><a href="{{ oTALG.alternative_url }}modify.php?page_id={{ page.page_id }}&section_id={{ section.section_id }}">{{ section.module }}</a></td>
+
+					{% if SECTION_BLOCKS == false %} {% else %}<td class="input_normal">
+						<div class="section_title">{{ TEXT.BLOCK }}:</div><select name="block{{ section.section_id }}" class="input_normal">
+						{% for id,name in blocks %}
+							<option value="{{ id }}" {% if id == section.block %}selected="selected"{% endif %}>{{ name }}</option>
+						{% endfor %}
+						</select>
+					</td>{% endif %}
+					<td>
+						<div class="section_title">{{ THEME.SECTION_NAME }}:</div><input type="text" value="{{ section.name }}" name="section_name[{{ section.section_id }}]" />
+					</td>
+					<td class="list_pubdate_start">
+						<div class="section_title">{{ TEXT.PUBL_START_DATE }}:</div><input type="text" id="datepicker_start_{{ section.section_id }}" name="start_date{{ section.section_id }}" value="{% if( section.publ_start != '0') %}{{ section.publ_start|date(DATE_FORMAT) }}{% endif %}" class="input_normal" />
+						<img src="{{ LEPTON_URL }}/modules/lib_lepton/backend_images/calendar_del_16.png" style="cursor:pointer;" alt="{{ TEXT.DELETE_DATE }}" title="{{ TEXT.DELETE_DATE }}" onclick="document.section_properties.start_date{{ section.section_id }}.value=''" />
+					</td>
+
+					<td class="list_pubdate_end">
+						<div class="section_title">{{ TEXT.PUBL_END_DATE }}:</div><input type="text" id="datepicker_end_{{ section.section_id }}" name="end_date{{ section.section_id }}" value="{% if( section.publ_end != '0') %}{{ section.publ_end|date(DATE_FORMAT) }}{% endif %}" class="input_normal" />
+						<img src="{{ LEPTON_URL }}/modules/lib_lepton/backend_images/calendar_del_16.png" style="cursor:pointer;" alt="{{ TEXT.DELETE_DATE }}" title="{{ TEXT.DELETE_DATE }}" onclick="document.section_properties.end_date{{ section.section_id }}.value=''" />
+					</td>
+
+					<td class="actions"><div class="section_title">{{ TEXT.ACTIONS }}:</div>
+					{% if loop.index > 1 %}
+						<a href="{{ oTALG.action_url }}move_up.php?page_id={{ page.page_id }}&section_id={{ section.section_id }}"><img src="{{ LEPTON_URL }}/modules/lib_lepton/backend_images/up_16.png" alt="{TEXT.MOVE_UP}" /></a>
+					{% else %}
+						&nbsp;
+					{% endif %}
+					</td>
+
+					<td class="actions">
+					{% if (loop.last == false) %}
+						<a href="{{ oTALG.action_url }}move_down.php?page_id={{ page.page_id }}&amp;section_id={{ section.section_id }}"><img src="{{ LEPTON_URL }}/modules/lib_lepton/backend_images/down_16.png" alt="{TEXT.MOVE_DOWN}" /></a>
+					{% else %}
+						&nbsp;
+					{% endif %}
+					</td>
+
+					<td class="actions">
+						<a href="javascript: section_delete('{{ MESSAGE.SECTION_DELETE_CONFIRM|format(section.name,section.section_id) }}', {{ section.section_id }} );">
+							<img src="{{ LEPTON_URL }}/modules/lib_lepton/backend_images/delete_16.png" alt="{{ TEXT.DELETE }}" border="0" />
+						</a>
+					</td>
+
+					<td class="list_section_id"><div class="section_title">{{ THEME.SECTION_ID }}:</div>{{ section.section_id }}</td>
+
+				</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+{% if (noSectionsAvailable == "") %}		
+		<input type="submit" name="save" value="{{ TEXT.SAVE }}" class="add" formaction="{{ oTALG.action_url }}sections_save.php" />
+{% endif %}		
+	</div>
+
+{% if show_add == 1 %}
+	<div class="add_section container">
+		<h2>{{ TEXT.ADD_SECTION }}</h2>
+		<select name="module" class="input_large">
+		{% for module in all_page_modules %}
+			<option value="{{ module.addon_id }}" {% if module.name == 'WYSIWYG' %}selected="selected"{% endif %}>{{ module.name }}</option>
+		{% endfor %}
+		</select>
+		<input type="submit" name="add" value="{{ TEXT.ADD }}" class="add" />
+	</div>
+{% endif %}			
+</form>
+
+<script>
+	/* delete a section */
+	function section_delete(s_message,s_section_id)
+	{
+		var form_ref = document.getElementById('manage_section');
+		if(form_ref)
+		{
+			if(confirm(s_message)==true)
+			{
+				form_ref.elements.job.value='delete';
+				form_ref.elements.section_id.value=s_section_id;
+				form_ref.submit();
+			}
+		}
+	}
+
+	/* ALDUS :: try to enable datepicker */
+	var format = "{{ DATEPICKER_FORMAT }}";
+
+	$(function()
+	{
+		var sect_x ="{% for section in all_sections %}{% if(loop.index0 > 0) %}, {% endif %}#datepicker_start_{{ section.section_id }},#datepicker_end_{{ section.section_id }}{% endfor %}";
+		$( sect_x ).datepicker( {
+//			dateFormat: "{{ DATEPICKER_FORMAT }}",
+			regional: "{{ DEFAULT_LANGUAGE|lower }}",
+			showOn: "button",
+			buttonImage: "{{ LEPTON_URL }}/modules/lib_lepton/backend_images/calendar_add_16.png", // "images/calendar.gif",
+			buttonImageOnly: true,
+			buttonText: "{{ TEXT.CALENDAR }}"
+		});
+	});
+	
+
+	$("#manage_section_table").sortable({
+		itemSelector: 'tr',
+		update : function(event, ui )
+		{
+			var sortedIDs = $( this ).sortable( "toArray" );
+			// console.log( sortedIDs );
+			Talgos_update_Sections( sortedIDs );
+		}
+	});
+
+	/**
+	 * Needed for the $.sortable/drag as callback!
+	 */
+	var xmlhttp;
+	if (window.XMLHttpRequest)
+	{
+		// code for IE7+, Firefox, Chrome, Opera, Safari
+		xmlhttp=new XMLHttpRequest();
+	} else {
+		// code for IE6, IE5
+		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+
+	let sigHash = "{{ signatur }}";
+	function Talgos_update_Sections( sString )
+	{
+
+		xmlhttp.onreadystatechange=function()
+		{
+			if (xmlhttp.readyState==4)
+			{
+				if (xmlhttp.status==200)
+				{
+					let message_box_message_ref = document.getElementById("talgos_sections_messagebox_message");
+					let temp = xmlhttp.responseText.split("\n");
+					message_box_message_ref.innerHTML = temp[0];
+					sigHash = temp[1];
+					// console.log("h: "+sigHash);
+					let message_box_ref = document.getElementById("talgos_sections_messagebox");
+					message_box_ref.style.display = "block";
+					message_box_ref.classList.add("message");
+					
+					return true;
+				}
+			}
+		}
+		
+		xmlhttp.open("POST","{{ ADMIN_URL }}/pages/update_page_sections.php", true);
+		xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+		xmlhttp.send("sections="+sString+"&sig="+sigHash);
+	}
+
+</script>
+
+{% endautoescape %}

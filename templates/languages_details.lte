@@ -1,0 +1,48 @@
+{#
+/**
+ *	@template		Talgos Backend Theme
+ *	@version		see info.php of this template
+ *	@author			LEPTON project and others for Algos theme, LEPTON project for Talgos theme
+ *	@copyright		2010-2024 LEPTON Project 
+ *	@license		GNU General Public License
+ *	@license terms	see info.php of this template
+ *	@platform		see info.php of this template
+ */
+ #}
+{% autoescape false %}
+<div class="container">
+	<h2>{{ HEADING.LANGUAGE_DETAILS }}</h2>
+	<table class="talgos_template_details">
+		<tr>
+			<td>{{ TEXT.NAME }}:</td>
+			<td>{{ current.name }}</td>
+		</tr>
+		<tr>
+			<td>{{ TEXT.CODE }}:</td>
+			<td>{{ current.directory|lower }}</td>
+		</tr>
+		<tr>
+			<td>{{ TEXT.AUTHOR }}:</td>
+			<td>{{ current.author }}</td>
+		</tr>
+		<tr>
+			<td>{{ TEXT.VERSION }}:</td>
+			<td>{{ current.version }}</td>
+		</tr>
+		<tr>
+			<td>{{ TEXT.DESIGNED_FOR }}:</td>
+			<td>LEPTON {{ current.platform }}</td>
+		</tr>
+		<tr>
+			<td>{{ TEXT.LICENSE }}:</td>
+			<td>{{ current.license }}</td>
+		</tr>
+		<tr>
+			<td>GUID:</td>
+			<td>{{ current.guid }}</td>
+		</tr>		
+	</table>
+	<br />
+	<button class="back" onclick="window.location = 'index.php';">{{ TEXT.BACK }}</button>
+</div>
+{% endautoescape %}

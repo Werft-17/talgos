@@ -1,0 +1,76 @@
+{#
+/**
+ *	@template		Talgos Backend Theme
+ *	@version		see info.php of this template
+ *	@author			LEPTON project and others for Algos theme, LEPTON project for Talgos theme
+ *	@copyright		2010-2024 LEPTON Project 
+ *	@license		GNU General Public License
+ *	@license terms	see info.php of this template
+ *	@platform		see info.php of this template
+ */
+ #}
+{% autoescape false %}
+<!DOCTYPE html>
+<html>
+<head>
+<title>{{ TEXT_LOGIN }}</title>
+<meta http-equiv="content-type" content="text/html; charset={{ CHARSET }}" />
+<meta http-equiv="content-language" content="{{ LANGUAGE }}" />
+<meta name="description" content="{{ TEXT_LOGIN }}" />
+<meta name="keywords" content="{{ TEXT_LOGIN }}" />
+<link href="{{ THEME_URL }}/css/login.css" rel="stylesheet" type="text/css" />
+{{ GET_PAGE_HEADERS }}
+<script src="{{ LEPTON_URL }}/modules/lib_jquery/jquery-core/jquery-core.min.js"></script>
+<script>
+var THEME_URL = "{{ THEME_URL }}";
+</script>
+</head>
+<body>
+<div id="main_container">
+	<div class="login_form">
+		<h2>LEPTON LOGIN</h2>
+		<form class="talgos" action="{{ ACTION_URL }}" method="post" name="login">
+			<input type="hidden" name="username_fieldname" value="{{ USERNAME_FIELDNAME }}" />
+			<input type="hidden" name="password_fieldname" value="{{ PASSWORD_FIELDNAME }}" />
+			<div class="field first">
+				<label for="{{ USERNAME_FIELDNAME }}">{{ TEXT_USERNAME }}:</label>
+				<input class="login_input" type="text" maxlength="{{ MAX_USERNAME_LEN }}" name="{{ USERNAME_FIELDNAME }}" id="{{ USERNAME_FIELDNAME }}" value="{{ USERNAME }}" />
+			</div>
+			<div class="field">
+				<label for="{{ PASSWORD_FIELDNAME }}">{{ TEXT_PASSWORD }}:</label>
+				<input class="login_input" type="password" maxlength="{{ MAX_PASSWORD_LEN }}" name="{{ PASSWORD_FIELDNAME }}" id="{{ PASSWORD_FIELDNAME }}" />
+			</div>
+			<div class="button">
+				<input class="submit" type="submit" name="submit" id="forgot" value="{{ TEXT_LOGIN }}" />
+			</div>
+			<div id="details_link">
+				<a class="forgot" href="{{ FORGOTTEN_URL }}" class="forgot_pass">{{ TEXT_FORGOTTEN_DETAILS }}&nbsp;&raquo;</a> 
+				<div class="spacer"> </div>
+				<a class="home" href="{{ LEPTON_URL }}" target="_blank">{{ TEXT_HOME }}&nbsp;&raquo;</a>
+			</div>
+		</form>
+	</div>
+	<div class="footer_login">
+		<div class="left_footer_login">
+			<a href=" https://lepton-cms.org" title="LEPTON CMS" target="_blank">LEPTON Core</a> is released under the
+			<a href="http://www.gnu.org/licenses/gpl.html" title="LEPTON Core is GPL" target="_blank">GNU General Public License</a>.
+		</div>
+		<div class="left_footer_login">
+			<a href=" https://lepton-cms.org" title="LEPTON Package" target="_blank">LEPTON CMS Package</a> is released under several different licenses.
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+var tempRef = document.getElementById("{{ USERNAME_FIELDNAME }}");
+if(tempRef) { 
+	tempRef.blur();
+ } else {
+	Alert("Call");
+ }
+</script>
+<script> 
+    $(".first .login_input").focus(); 
+</script> 
+</body>
+</html>
+{% endautoescape %}

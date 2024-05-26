@@ -1,0 +1,70 @@
+{#
+/**
+ *	@module			reset_pin
+ *	@version		see info.php of this module
+ *	@author			cms-lab
+ *	@copyright		2010-2024 cms-lab
+ *	@link			https://cms-lab.com
+ *	@license		custom license: https://cms-lab.com/_documentation/reset-pin/license.php
+ *	@license_terms	please see license
+ *	@platform		see info.php of this module
+ */
+ #}
+
+{% autoescape false %}
+<div class="talgos_container">
+	<h3>{{ oRESET_PIN.module_name }}</h3>
+	<form class="ui form right">
+		<div class="submenu">
+			<ul>
+				<li>
+					<button class="menubutton" type="submit" name="btn_help" title="{{ TEXT.SHOW_MODINFO }}" formaction="{{ readme_link }}" formtarget="_blank" >{{ MENU.HELP }}</button>
+				</li>
+				<li>
+					<button class="menubutton" type="submit" name="btn_showmodinfo" value="{{ oRESET_PIN.module_directory }}" title="{{ TEXT.SHOW_MODINFO }}" formaction="{{ LEPTON_URL }}/backend/modules/module_info.php" formmethod="post">{{ TEXT.SHOW_MODINFO }}</button>
+				</li>
+			</ul>
+		</div>
+	</form>
+	{% if message is defined %}
+		<div class="ui basic segment">
+			<div class="ui {% if message.STATUS is same as(true) %}info{% else %}warning{% endif %} message">{{ oRESET_PIN.language[ message.MESSAGE_ID ] }}</div>
+		</div>
+	{% endif %}
+	<form class="ui form" id="{{ oRESET_PIN.module_directory }}" method="post" action="{{ ADMIN_URL }}/admintools/tool.php?tool={{ oRESET_PIN.module_directory }}">
+		<input type="hidden" name="tool" value="{{ oRESET_PIN.module_directory }}" />
+		<input type="hidden" name="leptoken" value="{{ leptoken }}" />
+		<input type='hidden' name='hash' value='{{ hash }}' />
+		<h3>{{ oRESET_PIN.language.chose_user }}</h3>
+		<div class="ui basic segment">
+			<div class="ui two column very relaxed grid">
+				<div class="column dividingl">
+					<div class="field">
+						<label>{{ TEXT.USERNAME }}</label>
+						<select name="username" class="ui fluid dropdown">
+							<option value="">{{ TEXT.PLEASE_SELECT }}</option>
+							{% for user in oRESET_PIN.all_users %}
+								<option value ="{{ user.user_id }}">{{ user.username }}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<input type="reset" id="reset" name="reset" value="{{ TEXT.RESET }}" />
+				</div>
+				<div class="right floated column dividingr">
+					<div class="field">
+						<label>{{ TEXT.DISPLAY_NAME }}</label>
+						<select name="display_name" class="ui fluid dropdown">
+							<option value="">{{ TEXT.PLEASE_SELECT }}</option>
+							{% for user in oRESET_PIN.all_users %}
+								<option value ="{{ user.user_id }}">{{ user.display_name }}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<input type="reset" id="reset" name="reset" value="{{ TEXT.RESET }}" />
+				</div>
+			</div>
+			<div class="ui vertical divider">{{ oRESET_PIN.language.or }}</div>
+		</div>
+	</form>
+</div>
+{% endautoescape %}

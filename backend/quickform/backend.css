@@ -1,0 +1,16 @@
+/**
+ *
+ *	@module			quickform
+ *	@version		see info.php of this module
+ *	@authors		LEPTON project
+ *	@copyright		2010-2024 LEPTON project
+ *	@license		GNU General Public License
+ *	@license terms	see info.php of this module
+ *	@platform		see info.php of this module
+ *
+ *
+ */
+
+/* backend.css quickform Talgos Theme */
+.qform input.textfield, .qform select {width:100%;}
+.qform label {font-weight:bold;}

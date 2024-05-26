@@ -1,0 +1,630 @@
+{#
+/**
+ *	@template		Talgos Backend Theme
+ *	@version		see info.php of this template
+ *	@author			LEPTON project and others for Algos theme, LEPTON project for Talgos theme
+ *	@copyright		2010-2024 LEPTON Project 
+ *	@license		GNU General Public License
+ *	@license terms	see info.php of this template
+ *	@platform		see info.php of this template
+ */
+ #}
+{% autoescape false %}
+<form name="{{ form_name }}" action="{{action_url }}" method="post">
+	<div id="accordion">
+		<h3>{{ HEADING.GENERAL_SETTINGS }}</h3>
+		<div>
+			<table class="settings_table">
+				<tr>
+					<td class="setting_name">{{ TEXT.WEBSITE_TITLE }}:</td>
+					<td class="setting_value" colspan="2">
+						<input type="text" name="website_title" value="{{ WEBSITE_TITLE }}" />
+					</td>
+				</tr>
+				<tr>
+					<td class="setting_name">{{ TEXT.BACKEND_TITLE }}:</td>
+					<td class="setting_value" colspan="2">
+						<input type="text" name="backend_title" value="{{ BACKEND_TITLE }}" />
+					</td>
+				</tr>
+				<tr>
+					<td class="setting_name">{{ TEXT.WEBSITE_DESCRIPTION }}:</td>
+					<td class="setting_value" colspan="2">
+						<textarea name="website_description" cols="80" rows="3">{{ WEBSITE_DESCRIPTION }}</textarea>
+					</td>
+				</tr>
+				<tr>
+					<td class="setting_name">{{ TEXT.WEBSITE_KEYWORDS }}:</td>
+					<td class="setting_value" colspan="2">
+						<textarea name="website_keywords" cols="80" rows="3" >{{ WEBSITE_KEYWORDS }}</textarea>
+					</td>
+				</tr>
+				<tr>
+					<td class="setting_name">{{ TEXT.WEBSITE_HEADER }}:</td>
+					<td class="setting_value" colspan="2">
+						<textarea name="website_header" cols="80" rows="3">{{ WEBSITE_HEADER }}</textarea>
+					</td>
+				</tr>
+				<tr>
+					<td class="setting_name">{{ TEXT.WEBSITE_FOOTER }}:</td>
+					<td class="setting_value" colspan="2">
+						<textarea name="website_footer" cols="80" rows="3">{{ WEBSITE_FOOTER }}</textarea>
+					</td>
+				</tr>
+				<!-- BEGIN show_page_level_limit_block -->
+				<tr>
+					<td class="setting_name">{{ TEXT.PAGE_LEVEL_LIMIT }}:</td>
+					<td class="setting_small" colspan="2">
+						<select name="page_level_limit">
+							{% for i in  range(0, 10) %}
+								<option value="{{ i }}" {% if(i == PAGE_LEVEL_LIMIT) %}selected='selected'{% endif %}>{{ i }}</option>
+							{% endfor %}
+						</select>					
+					</td>
+				</tr>
+				<!-- END show_page_level_limit_block -->
+				<tr>
+					<td class="setting_name">{{ TEXT.PAGE_TRASH }}:</td>
+					<td class="setting_value" colspan="2">
+						<input type="radio" name="page_trash" id="page_trash_disabled" value="disabled" {% if( 'disabled' == PAGE_TRASH ) %}checked='checked'{% endif %} />
+						<label for="page_trash_disabled">{{ TEXT.DISABLED }}</label>
+						<input type="radio" name="page_trash" id="page_trash_inline" value="inline" {% if( 'inline' == PAGE_TRASH ) %}checked='checked'{% endif %} />
+						<label for="page_trash_inline">{{ TEXT.INLINE }}</label>
+					</td>
+				</tr>
+				<!-- BEGIN show_checkbox_1_block -->
+				<tr>
+					<td class="setting_name">{{ TEXT.PAGE_LANGUAGES }}:</td>
+					<td class="setting_value" colspan="2">
+						<input type="radio" name="page_languages" id="page_languages_true" value="true" {% if('true' == PAGE_LANGUAGES) %}checked='checked'{% endif %} />
+						<label for="page_languages_true">{{ TEXT.ENABLED }}</label>
+						<input type="radio" name="page_languages" id="page_languages_false" value="false" {% if('false' == PAGE_LANGUAGES) %}checked='checked'{% endif %} />
+						<label for="page_languages_false">{{ TEXT.DISABLED }}</label>
+					</td>
+				</tr>
+				<tr>
+					<td class="setting_name">{{ TEXT.MULTIPLE_MENUS }}:</td>
+					<td class="setting_value" colspan="2">
+						<input type="radio" name="multiple_menus" id="multiple_menus_true" value="true" {% if('true' == MULTIPLE_MENUS) %}checked='checked'{% endif %} />
+						<label for="multiple_menus_true">{{ TEXT.ENABLED }}</label>
+						<input type="radio" name="multiple_menus" id="multiple_menus_false" value="false" {% if('false' == MULTIPLE_MENUS) %}checked='checked'{% endif %} />
+						<label for="multiple_menus_false">{{ TEXT.DISABLED }}</label>
+					</td>
+				</tr>
+				<!-- END show_checkbox_1_block -->
+				<tr>
+					<td class="setting_name">{{ TEXT.HOME_FOLDERS }}:</td>
+					<td class="setting_value" colspan="2">
+						<input type="radio" name="home_folders" id="home_folders_true" value="true" {% if('true' == HOME_FOLDERS) %}checked='checked'{% endif %} />
+						<label for="home_folders_true">{{ TEXT.ENABLED }}</label>
+						<input type="radio" name="home_folders" id="home_folders_false" value="false" {% if('false' == HOME_FOLDERS) %}checked='checked'{% endif %} />
+						<label for="home_folders_false">{{ TEXT.DISABLED }}</label>
+					</td>
+				</tr>
+				<!-- BEGIN show_checkbox_2_block -->
+				<tr>
+					<td class="setting_name">{{ HEADING.MANAGE_SECTIONS }}:</td>
+					<td class="setting_value" colspan="2">
+						<input type="radio" name="manage_sections" id="manage_sections_true" value="true" {% if( 'true' == MANAGE_SECTIONS) %}checked='checked'{% endif %} />
+						<label for="manage_sections_true">{{ TEXT.ENABLED }}</label>
+						<input type="radio" name="manage_sections" id="manage_sections_false" value="false" {% if( 'false' == MANAGE_SECTIONS) %}checked='checked'{% endif %} />
+						<label for="manage_sections_false">{{ TEXT.DISABLED }}</label>
+					</td>
+				</tr>
+				<tr>
+					<td class="setting_name">{{ TEXT.SECTION_BLOCKS }}:</td>
+					<td class="setting_value" colspan="2">
+						<input type="radio" name="section_blocks" id="section_blocks_true" value="true" {% if( 'true' == SECTION_BLOCKS) %}checked='checked'{% endif %} />
+						<label for="section_blocks_true">{{ TEXT.ENABLED }}</label>
+						<input type="radio" name="section_blocks" id="section_blocks_false" value="false" {% if( 'false' == SECTION_BLOCKS) %}checked='checked'{% endif %} />
+						<label for="section_blocks_false">{{ TEXT.DISABLED }}</label>
+					</td>
+				</tr>
+				<!-- END show_checkbox_2_block -->
+
+				<!-- BEGIN show_checkbox_3_block -->
+				<tr>
+					<td class="setting_name">{{ TEXT.HOMEPAGE_REDIRECTION }}:</td>
+					<td class="setting_value" colspan="2">
+						<input type="radio" name="homepage_redirection" id="homepage_redirection_true" value="true" {% if( 'true' == HOMEPAGE_REDIRECTION) %}checked='checked'{% endif %} />
+						<label for="homepage_redirection_true">{{ TEXT.ENABLED }}</label>
+						<input type="radio" name="homepage_redirection" id="homepage_redirection_false" value="false" {% if( 'false' == HOMEPAGE_REDIRECTION) %}checked='checked'{% endif %} />
+						<label for="homepage_redirection_false">{{ TEXT.DISABLED }}</label>
+					</td>
+				</tr>
+				<!-- END show_checkbox_3_block -->
+				<tr>
+					<td class="setting_name">{{ TEXT.LOGIN }}:</td>
+					<td class="setting_value" colspan="2">
+						<input type="radio" name="frontend_login" id="frontend_login_true" value="true" {% if( 'true' == FRONTEND_LOGIN) %}checked='checked'{% endif %} />
+						<label for="frontend_login_true">{{ TEXT.ENABLED }}</label>
+						<input type="radio" name="frontend_login" id="frontend_login_false" value="false" {% if( 'false' == FRONTEND_LOGIN) %}checked='checked'{% endif %} />
+						<label for="frontend_login_false">{{ TEXT.DISABLED }}</label>
+					</td>
+				</tr>
+				<!-- BEGIN show_redirect_timer_block -->
+				<tr>
+						<td class="setting_name">{{ TEXT.REDIRECT_AFTER }}:</td>
+						<td class="setting_small" colspan="2">
+							<input type="text" title="milli-seconds" name="redirect_timer" value="{{ REDIRECT_TIMER }}" />	
+						</td>
+				</tr>
+				<!-- END show_redirect_timer_block -->
+				<tr>
+					<td class="setting_name">{{ TEXT.SIGNUP }}:</td>
+					<td class="setting_value" colspan="2">
+						<select name="frontend_signup">
+							<option value="0" {% if(FRONTEND_SIGNUP == 0) %}selected='selected'{% endif %}>{{ TEXT.NONE }}</option>
+							{% for group in groups %}
+								<option value="{{ group.group_id }}" {% if(FRONTEND_SIGNUP == group.group_id) %}selected='selected'{% endif %}>{{ group.name }}</option>
+							{% endfor %}
+						</select>
+					</td>
+				</tr>
+				<!-- BEGIN show_php_error_level_block -->
+				<tr>
+					<td class="setting_name">{{ TEXT.PHP_ERROR_LEVEL }}:</td>
+					<td class="setting_value" colspan="2">
+						<select name="er_level">
+							{% for err_val, err_name in error_levels %}
+							<option value="{{ err_val }}" {% if(err_val == ER_LEVEL) %}selected='selected'{% endif %}>{{ err_name }}</option>
+							{% endfor %}
+						</select>
+					</td>
+				</tr>
+				<!-- END show_php_error_level_block -->
+				<!-- BEGIN show_wysiwyg_block -->
+				<tr>
+					<td class="setting_name">{{ TEXT.WYSIWYG_EDITOR }}:</td>
+					<td class="setting_value" colspan="2">
+						<select name="wysiwyg_editor">
+							{% for editor in editors %}
+								<option value="{{ editor.directory }}" {% if(editor.directory == WYSIWYG_EDITOR) %}selected='selected'{% endif %}>{{ editor.name }}</option>
+							{% endfor %}
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td class="setting_name">{{ THEME.WYSIWYG_HISTORY }}:</td>
+					<td class="setting_value" colspan="2">
+						<input type="radio" name="wysiwyg_history" id="wysiwyg_history_true" value="true" {% if( 'true' == WYSIWYG_HISTORY) %}checked='checked'{% endif %} />
+						<label for="wysiwyg_history_true">{{ TEXT.ENABLED }}</label>
+						<input type="radio" name="wysiwyg_history" id="wysiwyg_history_false" value="false" {% if( 'false' == WYSIWYG_HISTORY) %}checked='checked'{% endif %} />
+						<label for="wysiwyg_history_false">{{ TEXT.DISABLED }}</label>
+					</td>
+				</tr>				
+				<!-- END show_wysiwyg_block -->
+				<tr>
+					<td class="setting_name">&nbsp;</td>
+					<td class="setting_value" align="left" nowrap="nowrap">
+						<input type="submit" name="submit" value="{{ TEXT.SAVE }}" class="save_section" />
+						<input type="reset" name="reset" value="{{ TEXT.RESET }}" class="reset" />
+					</td>
+					<td style="width:45%; text-align: right;">
+						
+					</td>
+				</tr>
+			</table>
+		</div>
+		<h3>{{ HEADING.DEFAULT_SETTINGS }}</h3>
+		<div>
+			<table class="settings_table">
+				<tr>
+					<td class="setting_name">{{ TEXT.LANGUAGE }}:</td>
+					<td class="setting_value" colspan="2">
+						<select name="default_language">
+							{% for lang in languages %}
+								<option value="{{ lang.directory }}" {% if(lang.directory == DEFAULT_LANGUAGE) %}selected='selected'{% endif %}>{{ lang.name }} ({{ lang.directory }})</option>
+							{% endfor %}
+						</select>
+					</td>
+				</tr>
+{#
+				<tr>
+					<td class="setting_name">{{ TEXT.LINK }}-{{ TEXT.CHARSET }}:</td>
+					<td class="setting_value" colspan="2">
+						<select name="link_charset">
+							<option value="utf-8" selected='selected'>utf-8</option>
+						</select>
+					</td>
+				</tr>
+#}
+				<tr>
+					<td class="setting_name">{{ TEXT.TIMEZONE }}:</td>
+					<td class="setting_value" colspan="2">
+						<select name="default_timezone_string" id="timezone_string">
+							{% for temp_time in timezones %}
+								<option value="{{ temp_time }}" {% if temp_time == DEFAULT_TIMEZONE_STRING %}selected="selected"{% endif %}>{{ temp_time }}</option>
+							{% endfor %}
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td class="setting_name">{{ TEXT.DATE_FORMAT }}:</td>
+					<td class="setting_value" colspan="2">
+						<select name="default_date_format" id="date_format">
+							{% for key, value in date_formats %}
+								{% if(value != "") %}
+								<option value="{{ key }}" {% if key == DEFAULT_DATE_FORMAT %}selected="selected"{% endif %}>{{ value }}</option>
+								{% endif %}
+							{% endfor %}
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td class="setting_name">{{ TEXT.TIME_FORMAT }}:</td>
+					<td class="setting_value" colspan="2">
+						<select name="default_time_format" id="time_format">
+							{% for key,value in time_formats %}
+								{% if(value != "") %}
+								<option value="{{ key }}" {% if key == DEFAULT_TIME_FORMAT %}selected="selected"{% endif %}>{{ value }}</option>
+								{% endif %}
+							{% endfor %}
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td class="setting_name">{{ TEXT.TEMPLATE }}:</td>
+					<td class="setting_value" colspan="2">
+						<select name="default_template">
+							{% for template in templates %}
+								<option value="{{ template.directory }}" {% if(DEFAULT_TEMPLATE == template.directory) %}selected='selected'{% endif %}>{{ template.name }}</option>
+							{% endfor %}
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td class="setting_name">{{ TEXT.THEME }}:</td>
+					<td class="setting_value" colspan="2">
+						<select name="default_theme">
+							{% for theme in themes %}
+								<option value="{{ theme.directory }}" {% if(DEFAULT_THEME == theme.directory) %}selected='selected'{% endif %}>{{ theme.name }}</option>
+							{% endfor %}
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="3" style="padding-top: 10px;">
+						<h2>{{ HEADING.SECURITY_SETTINGS }}</h2>
+					</td>
+				</tr>
+				<tr>
+					<td class="setting_name">{{ TEXT.LEPTOKEN_LIFETIME }}:</td>
+					<td class="setting_small" colspan="2">
+						<input type="text" name="leptoken_lifetime" value="{{ LEPTOKEN_LIFETIME }}" />
+						{{ TEXT.HELP_LEPTOKEN_LIFETIME }}
+					</td>
+				</tr>
+				<tr>
+					<td class="setting_name">{{ TEXT.MAX_ATTEMPTS }}:</td>
+					<td class="setting_small" colspan="2">
+						<input type="text" name="max_attempts" value="{{ MAX_ATTEMPTS }}" />
+						{{ TEXT.HELP_MAX_ATTEMPTS }}
+					</td>
+				</tr>
+				<tr>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>
+
+				<tr>
+					<td class="setting_name">{{ TEXT.TFA }}:</td>
+					<td class="setting_value" colspan="3">
+						<input type="radio" name="tfa" id="tfa_local" value="local" {% if('local' == TFA) %}checked='checked'{% endif %} />
+						<label for="tfa_one">{{ TEXT.TFA_TYPE_LOCAL }}</label>
+						<input type="radio" name="tfa" id="tfa_none" value="none" {% if('none' == TFA) %}checked='checked'{% endif %} />
+						<label for="tfa_zero">{{ TEXT.TFA_TYPE_NO }}</label>				
+						<input type="radio" name="tfa" id="tfa_mail" value="mail" {% if('mail' == TFA) %}checked='checked'{% endif %} />
+						<label for="tfa_two">{{ TEXT.TFA_TYPE_MAIL }}</label>				
+						<b>{{ TEXT.TFA_NOTICE_II }}</b>
+					</td>
+				</tr>		
+				<tr>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>		
+				<tr>
+					<td>&nbsp;</td>
+					<td>
+						<input type="submit" name="submit" value="{{ TEXT.SAVE }}" class="save_section" />
+						<input type="reset" name="reset" value="{{ TEXT.RESET }}" class="reset" />
+					</td>
+					<td style="text-align: right;">
+						
+					</td>
+				</tr>
+			</table>
+		</div>
+
+		<h3>{{ HEADING.SEARCH_SETTINGS }}</h3>
+		<div>
+			<table class="settings_table">
+				<tr>
+					<td class="setting_name">{{ TEXT.VISIBILITY }}:</td>
+					<td class="setting_value" colspan="2">
+						<select name="search">
+							<option value="public" {% if(SEARCH == 'public') %}selected='selected'{% endif %}>{{ TEXT.PUBLIC }}</option>
+							<option value="private" {% if(SEARCH == 'private') %}selected='selected'{% endif %}>{{ TEXT.PRIVATE }}</option>
+							<option value="registered" {% if(SEARCH == 'registered') %}selected='selected'{% endif %}>{{ TEXT.REGISTERED }}</option>
+							<option value="hidden" {% if(SEARCH == 'hidden') %}selected='selected'{% endif %}>{{ TEXT.HIDDEN }}</option>
+							<option value="none" {% if(SEARCH == 'none') %}selected='selected'{% endif %}>{{ TEXT.NONE }}</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td class="setting_name">{{ TEXT.TEMPLATE }}:</td>
+					<td class="setting_value" colspan="2">
+						<select name="search_template">
+							{% for template in templates %}
+								<option value="{{ template.directory }}" {% if(search.template == template.directory) %}selected='selected'{% endif %}>{{ template.name }}</option>
+							{% endfor %}
+						</select>
+					</td>
+				</tr>
+				<!-- BEGIN show_search_block -->
+				<tr>
+					<td class="setting_name">{{ TEXT.MODULE_ORDER }}:</td>
+					<td class="setting_value" colspan="2">
+						<input type="text" name="search_module_order" value="{{ search.module_order }}" />
+					</td>
+				</tr>
+				<tr>
+					<td class="setting_name">{{ TEXT.MAX_EXCERPT }}:</td>
+					<td class="setting_value" colspan="2">
+						<input type="text" name="search_max_excerpt" value="{{ search.max_excerpt }}" />
+					</td>
+				</tr>
+				<tr>
+					<td class="setting_name">{{ TEXT.TIME_LIMIT }}:</td>
+					<td class="setting_value" colspan="2">
+						<input type="text" name="search_time_limit" value="{{ search.time_limit }}" />
+					</td>
+				</tr>
+				<!-- END show_search_block -->
+				<!-- BEGIN search_footer_block -->
+				<tr>
+					<td>&nbsp;</td>
+					<td>
+						<input type="submit" name="submit" value="{{ TEXT.SAVE }}" class="save_section" />
+						<input type="reset" name="reset" value="{{ TEXT.RESET }}" class="reset" />
+					</td>
+					<td style="text-align: right;">
+						
+					</td>
+				</tr>
+				<!-- END search_footer_block -->
+			</table>
+		</div>
+
+		<!-- BEGIN show_admin_block -->
+		<h3>{{ HEADING.SERVER_SETTINGS }}</h3>
+		<div>
+			<table class="settings_table">
+		{# to_do: rework  #}			
+				<tr>
+					<td class="setting_name">{{ TEXT.SERVER_OPERATING_SYSTEM }}:</td>
+					<td class="setting_value" colspan="2">
+						<input type="radio" name="operating_system" id="operating_system_linux" onclick="document.getElementById('{% if is_advanced == true %}show{% else %}file_perms_box{% endif %}2');" value="linux" {% if( 'linux' == OPERATING_SYSTEM) %}checked='checked'{% endif %} />
+						<label for="operating_system_linux" onclick="document.getElementById('{% if is_advanced == true %}show{% else %}file_perms_box{% endif %}2');" >{{ TEXT.LINUX_UNIX_BASED }}</label>
+						<input type="radio" name="operating_system" id="operating_system_windows" onclick="document.getElementById('{% if is_advanced == true %}show{% else %}file_perms_box{% endif %}2');" value="windows" {% if( 'windows' == OPERATING_SYSTEM) %}checked='checked'{% endif %} />
+						<label for="operating_system_windows" onclick="document.getElementById('{% if is_advanced == true %}show{% else %}file_perms_box{% endif %}2');" >{{ TEXT.WINDOWS }}</label>
+					</td>
+				</tr>
+				<tr>
+					<td class="setting_name"><div id="{% if is_advanced == true %}show{% else %}file_perms_box{% endif %}1">&nbsp;</div></td>
+					<td class="setting_perms" colspan="3">
+						<div id="{% if is_advanced == true %}show{% else %}file_perms_box{% endif %}2" style="display:{% if 'linux' == OPERATING_SYSTEM %}block{% else %}none{% endif %};">
+							<input type="checkbox" name="world_writeable" id="world_writeable" value="true"{{ WORLD_WRITEABLE_SELECTED }} />
+							<label for="{{ world_writeable }}">{{ TEXT.WORLD_WRITEABLE_FILE_PERMISSIONS }} (777)</label>									
+							<div class="important" style="margin-top:6px; margin-bottom: 0;">{{ MESSAGE.SETTINGS_WORLD_WRITEABLE_WARNING }}</div>
+						</div>
+						<div id="{% if is_advanced == true %}show{% else %}file_perms_box{% endif %}3"></div>
+					</td>
+				</tr>				
+		{# to_do: rework  #}
+				<!-- BEGIN show_access_block -->
+				<tr>
+					<td class="setting_name">{{ TEXT.PAGES_DIRECTORY }}:</td>
+					<td class="setting_value" colspan="2">
+						<input type="text" name="pages_directory" value="{{ PAGES_DIRECTORY }}" />
+					</td>
+				</tr>
+				<tr>
+					<td class="setting_name">{{ TEXT.MEDIA_DIRECTORY }}:</td>
+					<td class="setting_value" colspan="2">
+						<input type="text" name="media_directory" value="{{ MEDIA_DIRECTORY }}" />
+					</td>
+				</tr>
+				<tr>
+					<td class="setting_name">{{ TEXT.PAGE_EXTENSION }}:</td>
+					<td class="setting_value" colspan="2">
+						<input type="text" name="page_extension" value="{{ PAGE_EXTENSION }}" />
+					</td>
+				</tr>
+				<tr>
+					<td class="setting_name">{{ TEXT.PAGE_SPACER }}:</td>
+					<td class="setting_value" colspan="2">
+						<input type="text" name="page_spacer" value="{{ PAGE_SPACER }}" />
+					</td>
+				</tr>
+				<tr>
+					<td class="setting_name">{{ TEXT.ALLOWED_FILETYPES_ON_UPLOAD }}:</td>
+					<td class="setting_value" colspan="2">
+						<input type="text" name="upload_whitelist" value="{{ UPLOAD_WHITELIST }}" />
+					</td>
+				</tr>
+				<tr>
+					<td class="setting_name">{{ TEXT.SESSION_IDENTIFIER }}:</td>
+					<td class="setting_value" colspan="2">
+						<input disabled type="text" name="app_name" value="{{ APP_NAME }}" />
+					</td>
+				</tr>
+				<tr>
+					<td class="setting_name">{{ TEXT.SEC_ANCHOR }}:</td>
+					<td class="setting_value" colspan="2">
+						<input type="text" name="sec_anchor" value="{{ SEC_ANCHOR }}" />
+					</td>
+				</tr>
+				<!-- END show_access_block -->
+				<!-- BEGIN access_footer_block -->
+				<tr>
+					<td>&nbsp;</td>
+					<td>
+						<input type="submit" name="submit" value="{{ TEXT.SAVE }}" class="save_section" />
+						<input type="reset" name="reset" value="{{ TEXT.RESET }}" class="reset" />
+					</td>
+					<td style="text-align: right;">
+						
+					</td>
+				</tr>
+				<!-- END access_footer_block -->
+			</table>
+		</div>
+
+		<h3>{{ HEADING.MAILER_SETTINGS }}</h3>
+		<div>
+			<table cellpadding="0" cellspacing="0" border="0" align="center" width="100%" class="settings_table" id="tab-5">
+				<!-- BEGIN mailer_settings_block -->
+				<tr>
+					<td colspan="4">
+						<p>{{ TEXT.MAILER_DEFAULT_SETTINGS_NOTICE }}</p>
+						<div>&nbsp;</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="setting_name">{{ TEXT.MAILER_DEFAULT_SENDER_MAIL }}:</td>
+					<td class="setting_value" colspan="2">
+						<input type="text" name="server_email" value="{{ SERVER_EMAIL }}" />
+					</td>
+				</tr>
+				<tr>
+					<td class="setting_name">{{ TEXT.MAILER_DEFAULT_SENDER_NAME }}:</td>
+					<td class="setting_value" colspan="2">
+						<input type="text" name="mailer_default_sendername" value="{{ MAILER_DEFAULT_SENDERNAME }}" />
+					</td>
+				</tr>
+				<tr>
+					<td class="setting_name">{{ TEXT.MAILER_FUNCTION }}:</td>
+					<td class="setting_value" colspan="2">
+						<!-- a -->
+						<input type="radio" name="mailer_routine" id="mailer_routine_phpmail" onclick="talgos_toggle_smtp(0);" value="phpmail" {% if(MAILER_ROUTINE == "phpmail") %}checked="checked"{% endif %} />
+						<label for="mailer_routine_phpmail" onclick="lepsem_toggle_smtp(0);">{{ TEXT.MAILER_PHP }}</label>
+						<!-- b -->
+						<input type="radio" name="mailer_routine" id="mailer_routine_smtp" onclick="talgos_toggle_smtp(1);" value="smtp" {% if(MAILER_ROUTINE == "smtp") %}checked="checked"{% endif %} />
+						<label for="mailer_routine_smtp" >{{ TEXT.MAILER_SMTP }}</label>
+					</td>
+				</tr>
+				
+				<!-- [7] BEGIN smtp_mailer_settings_block -->
+				<tr id="mailer_smtp_settings" {% if(MAILER_ROUTINE == "phpmail") %}style="display: none;"{% endif %}>
+					<td colspan="4">
+						<p style="line-height: 1.4em; margin-top: 0;">{{ TEXT.MAILER_NOTICE }}</p>
+					</td>
+				</tr>
+				<!-- [7.1] -->
+				<tr id="mailer_smtp_host" {% if(MAILER_ROUTINE == "phpmail") %}style="display: none;"{% endif %}>
+					<td class="setting_name">{{ TEXT.MAILER_SMTP_HOST }}:</td>
+					<td class="setting_value" colspan="2">
+						<input type="text" name="mailer_smtp_host" value="{{ MAILER_SMTP_HOST }}" />
+					</td>
+				</tr>
+				<!-- [7.2]  -->
+				<tr id="mailer_smtp_auth_mode" {% if(MAILER_ROUTINE == "phpmail") %}style="display: none;"{% endif %}>
+					<td class="setting_name">{{ TEXT.MAILER_SMTP_AUTH }}:</td>
+					<td class="setting_smtp" colspan="3">
+						<input type="checkbox" name="mailer_smtp_auth" id="mailer_smtp_auth" onchange="talgos_toggle_smtp_auth( this );" value="true" {% if( MAILER_SMTP_AUTH == true ) %}checked="checked"{% endif %} />
+						<label for="mailer_smtp_auth" >({{ TEXT.MAILER_SMTP_AUTH_NOTICE }})</label>
+					</td>
+				</tr>
+
+				<!--- [7.3] -->
+                <tr id="mailer_smtp_username" {% if(MAILER_ROUTINE == "phpmail") %}style="display: none;"{% endif %}>
+                    <td class="setting_name">{{ TEXT.MAILER_SMTP_USERNAME }}:</td>
+                    <td class="setting_value" colspan="2">
+                        <input type="text" name="mailer_smtp_username" value="{{ MAILER_SMTP_USERNAME }}" />
+                    </td>
+                </tr>
+                <tr id="mailer_smtp_password" {% if(MAILER_ROUTINE == "phpmail") %}style="display: none;"{% endif %}>
+                    <td class="setting_name">{{ TEXT.MAILER_SMTP_PASSWORD }}:</td>
+                    <td class="setting_value" colspan="2">
+                        <input type="password" name="mailer_smtp_password" value="{{ MAILER_SMTP_PASSWORD }}" />
+                    </td>
+                </tr>
+				<!-- end 4 -->
+				
+				<!-- END smtp_mailer_settings_block -->
+				<!-- END mailer_settings_block -->
+				<tr>
+					<td>&nbsp;</td>
+					<td>
+						<input type="submit" name="submit" value="{{ TEXT.SAVE }}" class="save_section" />
+						<input type="reset" name="reset" value="{{ TEXT.RESET }}" class="reset" />
+						<!-- BEGIN send_testmail_block -->
+						<button id="checkmail" name="checkmail" onclick="send_testmail('{{ ADMIN_URL }}/settings/ajax_testmail.php');return false;">{{ TEXT.MAILER_SEND_TESTMAIL }}</button>
+						<!-- END send_testmail_block -->
+					</td>
+					<td style="text-align: right;">
+						<p>&nbsp;</p>
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</form>
+<script src="{{ ADMIN_URL }}/settings/setting.js"></script>
+<div>
+<script>
+	$( function() {
+		$( "#accordion" ).accordion(
+			{
+			  icons: { "header": "ui-icon-plus", "activeHeader": "ui-icon-minus" },
+			  collapsible: true
+			}		
+		);
+	} );
+	
+function talgos_toggle_smtp( onOrOff )
+{
+    if(onOrOff == 0) {
+        $("#mailer_smtp_settings").hide();
+        $("#mailer_smtp_host").hide();
+        $("#mailer_smtp_auth_mode").hide();
+        $("#mailer_smtp_username").hide();
+        $("#mailer_smtp_password").hide();
+        
+    } else {
+        $("#mailer_smtp_settings").fadeIn("slow");
+        $("#mailer_smtp_host").fadeIn("slow");
+        $("#mailer_smtp_auth_mode").fadeIn("slow");
+        
+        var ref = document.getElementById("mailer_smtp_auth");
+        if(ref)
+        {
+            if(ref.checked == true)
+            {
+                $("#mailer_smtp_username").fadeIn("slow");
+                $("#mailer_smtp_password").fadeIn("slow");
+            } else {
+                $("#mailer_smtp_username").hide();
+                $("#mailer_smtp_password").hide();
+            
+            }
+        }
+    }
+}
+
+function talgos_toggle_smtp_auth( aCheckboxRef )
+{
+    if(aCheckboxRef.checked == true)
+    {
+        $("#mailer_smtp_username").fadeIn("slow");
+        $("#mailer_smtp_password").fadeIn("slow");
+    } else {
+        $("#mailer_smtp_username").fadeOut("slow");
+        $("#mailer_smtp_password").fadeOut("slow");
+    
+    }
+}
+</script>
+</div>
+{% endautoescape %}

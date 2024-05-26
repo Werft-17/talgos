@@ -1,0 +1,37 @@
+{#
+/**
+ *	@template		Talgos Backend Theme
+ *	@version		see info.php of this template
+ *	@author			LEPTON project and others for Algos theme, LEPTON project for Talgos theme
+ *	@copyright		2010-2024 LEPTON Project 
+ *	@license		GNU General Public License
+ *	@license terms	see info.php of this template
+ *	@platform		see info.php of this template
+ */
+ #}
+{% autoescape false %}
+
+<div class="start_frame">
+	{% if display_users == true %}
+		<div class="start_item">
+			<div class="graphic">
+				<a href="{{ ADMIN_URL }}/users/index.php"><img src="{{ LEPTON_URL }}/modules/lib_lepton/backend_images/users_50.png" alt="{{ MENU.USERS }}" /></a>
+			</div>
+			<div class="description" valign="top">
+				<p><a class="title" href="{{ ADMIN_URL }}/users/index.php">{{ MENU.USERS }}</a></p><p>{{ OVERVIEW.USERS }}</p>
+			</div>
+		</div>
+	{% endif %}
+
+	{% if display_groups == true %}
+		<div class="start_item">
+			<div class="graphic">
+				<a href="{{ ADMIN_URL }}/groups/index.php"><img src="{{ LEPTON_URL }}/modules/lib_lepton/backend_images/groups_50.png" alt="{{ MENU.GROUPS }}" /></a>
+			</div>
+			<div class="description" valign="top">
+				<p><a class="title" href="{{ ADMIN_URL }}/groups/index.php">{{ MENU.GROUPS }}</a></p><p>{{ OVERVIEW.GROUPS }}</p>
+			</div>
+		</div>
+	{% endif %}
+</div>
+{% endautoescape %}

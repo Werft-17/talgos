@@ -1,0 +1,81 @@
+{#
+/**
+ *	@template		Talgos Backend Theme
+ *	@version		see info.php of this template
+ *	@author			LEPTON project and others for Algos theme, LEPTON project for Talgos theme
+ *	@copyright		2010-2024 LEPTON Project 
+ *	@license		GNU General Public License
+ *	@license terms	see info.php of this template
+ *	@platform		see info.php of this template
+ */
+ #}
+{% autoescape false %}
+<div class="submenu">
+	<ul>
+		{% if true == url_modules %}<li><a class="button" href="{{ ADMIN_URL }}/modules/index.php">{{ MENU.MODULES }}</a></li>{% else %}{% endif %}
+		{% if true == url_templates %}<li><a class="button" href="{{ ADMIN_URL }}/templates/index.php">{{ MENU.TEMPLATES }}</a></li>{% else %}{% endif %}
+	</ul>
+</div>
+{% if true == perm_install %}
+<form name="install" enctype="multipart/form-data" action="{{ action_url }}install.php" method="post">
+	<div class="addons_item">
+	<h2>{{ HEADING.INSTALL_LANGUAGE }}</h2>
+		<div class="addons_task">
+			<input type="file" name="userfile" size="85%" />
+				<script type="text/javascript">
+					document.install.userfile.focus();
+				</script>
+		</div>
+		<div class="addons_button">
+			<input type="submit" name="submit" value="{{ TEXT.INSTALL }}" />
+		</div>
+	</div>
+</form>
+{% else %}
+<div></div>
+{% endif %}
+
+{% if true == perm_uninstall %}
+<form name="uninstall" action="{{ action_url }}uninstall.php" method="post">
+	<div class="addons_item">
+	<h2>{{ HEADING.UNINSTALL_LANGUAGE }}</h2>
+		<div class="addons_task">
+			<select name="code" style="width: 97%;">
+				<option value="" selected="selected">{{ TEXT.PLEASE_SELECT }}...</option>
+				{% for uninstall in all_languages %}
+					{% if 1 == uninstall.to_delete %}
+						<option value="{{ uninstall.directory }}">{{ uninstall.name }}</option>
+					{% endif %}
+				{% endfor %}
+			</select>
+		</div>
+		<div class="addons_button">
+			<input class="delete" type="submit" name="submit" value="{{ TEXT.UNINSTALL }}"  />
+		</div>
+	</div>
+</form>
+{% else %}
+<div></div>
+{% endif %}
+
+{% if true == perm_view %}
+<form name="details" action="{{ alternative_url }}details.php" method="post">
+	<div class="addons_item">
+	<h2>{{ HEADING.LANGUAGE_DETAILS }}</h2>
+		<div class="addons_task">
+			<select name="code" style="width: 97%;">
+					<option value="" selected="selected">{{ TEXT.PLEASE_SELECT }}...</option>
+					{% for view in all_languages %}
+						<option value="{{ view.directory }}">{{ view.name }}</option>
+					{% endfor %}
+				</select>
+		</div>
+		<div class="addons_button">
+			<input class="infobtn" type="submit" name="submit" value="{{ TEXT.VIEW_DETAILS }}" />
+		</div>
+	</div>
+</form>
+{% else %}
+<div></div>
+{% endif %}
+{% endautoescape %}

@@ -1,0 +1,281 @@
+{#
+/**
+ *	@template		Talgos Backend Theme
+ *	@version		see info.php of this template
+ *	@author			LEPTON project and others for Algos theme, LEPTON project for Talgos theme
+ *	@copyright		2010-2024 LEPTON Project 
+ *	@license		GNU General Public License
+ *	@license terms	see info.php of this template
+ *	@platform		see info.php of this template
+ */
+ #}
+{% autoescape false %}
+<script>
+var THEME_URL = '{{ THEME_URL }}';
+
+  $(document).ready(function(){
+    $('*[data-level]').each(function(){
+      var level = $(this).data('level');
+      var padding = 7;
+      if(level > 0)
+        padding = level*22;
+      $(this).css('padding-left', padding + 'px')
+    });
+  });
+</script>
+<script src="{{ alternative_url }}js/page_index.js"></script>
+
+<div id="talgos_pagetree_messagebox">
+    <p id="talgos_pagetree_messagebox_message">
+    </p>
+</div>
+
+{% macro display_pagelink( page, deep, num, parent_tree_status, max_pages, MANAGE_SECTIONS ) %}
+<ul name="{{ page.parent }}" id="p{{ page.page_id }}" class="page_list" style="display:{% if  (parent_tree_status == 0 )%}none{% else %}block{% endif %};" data-group="p{{ page.parent }}">
+  <!-- BEGIN page_sublist_loop_block -->
+  <li class="p{{ page.parent }}">
+    <table summary="{{ TEXT.EXPAND }}/{{ TEXT.COLLAPSE }}" class="pages_view">
+      <tr class="pages_loop_desktop">
+        <td width="20" data-level="{{ page.level }}"> </td>
+        <td class="list_menu_title">
+            {% if  (page.subpages|length > 0 )%}
+            <a href="javascript:toggle_visibility('p{{ page.page_id }}');" title="{{ TEXT.EXPAND }}/{{ TEXT.COLLAPSE }}">
+                <img src="{{ LEPTON_URL }}/modules/lib_lepton/backend_images/{% if(page.tree_status == 0) %}plus{% else %}minus{% endif %}_16.png" onclick="toggle_plus_minus('{{ page.page_id }}');" name="plus_minus_{{ page.page_id }}" alt="+" />
+            </a>
+            {% endif %}
+
+          <a title="{{ TEXT.MODIFY }}" href="{{ alternative_url }}modify.php?page_id={{ page.page_id }}">
+            <img src='{{ LEPTON_URL }}/modules/lib_lepton/backend_images/{{ page.visibility }}_16.png' alt='{{ TEXT.VISIBILITY }}' class='page_list_rights' />
+            {{ page.menu_title }}
+          </a>
+        </td>
+        <td class="list_page_title">{{ page.page_title }}</td>
+        <td class="list_page_URL">{{ page.link }}</td>
+        <td class="list_page_id">{{ page.page_id }}</td>
+        <td class="list_actions">
+
+          <!-- BEGIN link_view_block -->
+          <a href="{{ LEPTON_URL }}{{ page.link }}" target="_blank" title="{{ TEXT.VIEW }}">
+            <img src="{{ LEPTON_URL }}/modules/lib_lepton/backend_images/view_16.png" alt="{{ TEXT_VIEW }}" />
+          </a>
+          <!-- END link_view_block -->
+
+        </td>
+        <td class="list_actions">
+        {% if page.visibility != 'deleted' %} 
+          <a href="{{ alternative_url }}settings.php?page_id={{ page.page_id }}" title="{{ TEXT.SETTINGS }}#####{{ page.visibilty }}">
+            <img src="{{ LEPTON_URL }}/modules/lib_lepton/backend_images/settings_16.png" alt="{{ TEXT.SETTINGS }}" />
+          </a>
+        {% else %}
+          <a href="{{ action_url }}restore.php?page_id={{ page.page_id }}" title="{{ TEXT.RESTORE }}">
+            <img src="{{ LEPTON_URL }}/modules/lib_lepton/backend_images/restore_16.png" alt="{{ TEXT.RESTORE }}" />
+          </a>
+        {% endif %} 
+        </td>
+
+{% if MANAGE_SECTIONS == true %}
+        <td class="list_actions"> 		
+          <a href="{{ alternative_url }}sections.php?page_id={{ page.page_id }}" title="{{ HEADING.MANAGE_SECTIONS }}">
+            <img src="{{ LEPTON_URL }}/modules/lib_lepton/backend_images/clock_16.png" alt="{{ HEADING.MANAGE_SECTIONS }}" />
+          </a>		  
+        </td>
+{% endif %}	
+	
+        <td class="list_actions">
+          <!-- BEGIN link_move_up_block -->
+          {% if (num > 1) %}
+          <a href="{{ action_url }}move_up.php?page_id={{ page.page_id }}" title="{{ TEXT.MOVE_UP }}">
+            <img src="{{ LEPTON_URL }}/modules/lib_lepton/backend_images/up_16.png" alt="{{ TEXT.MOVE_UP }}" />
+          </a>
+          {% endif %}
+          <!-- END link_move_up_block -->
+        </td>
+        <td class="list_actions">
+          <!-- BEGIN link_move_down_block -->
+          {% if (num < max_pages) %}
+          <a href="{{ action_url }}move_down.php?page_id={{ page.page_id }}" title="{{ TEXT.MOVE_DOWN }}">
+            <img src="{{ LEPTON_URL }}/modules/lib_lepton/backend_images/down_16.png" alt="{{ TEXT.MOVE_DOWN }}" />
+          </a>
+          {% endif %}
+          <!-- END link_move_down_block -->
+        </td>
+        <td class="list_actions">
+          <!-- BEGIN link_delete_block -->
+          <a href="javascript:confirm_delete_page('{{ MESSAGE.PAGES_DELETE_CONFIRM }}?','{{ ADMIN_URL }}/pages/delete.php?page_id={{ page.page_id }}', '{{ page.page_title }}');" title="{{ TEXT.DELETE }}">
+            <img src="{{ LEPTON_URL }}/modules/lib_lepton/backend_images/delete_16.png" alt="{TEXT_DELETE}" />
+          </a>
+          <!-- END link_delete_block -->
+        </td>
+        <td class="list_actions">
+          <!-- BEGIN link_add_block -->
+          <a href="javascript:add_child_page('{{ page.page_id }}');" title="{{ HEADING.ADD_PAGE }}">
+            <img src="{{ LEPTON_URL }}/modules/lib_lepton/backend_images/siteadd_16.png" name="addpage_{{ page.page_id }}" alt="Add Child Page" />
+          </a>
+
+          <!-- END link_add_block -->
+        </td>
+      </tr>
+
+	  <!-- MOBILE VIEW -->
+
+      <tr class="pages_loop_mobile">
+        <td width=20" data-level="{{ page.level }}"> </td>
+        <td class="list_menu_title">{{ TEXT.VISIBILITY }} / {{ TEXT.MENU_TITLE }}:<br />
+            {% if  (page.subpages|length > 0 )%}
+            <a href="javascript:toggle_visibility('p{{ page.page_id }}');" title="{{ TEXT.EXPAND }}/{{ TEXT.COLLAPSE }}">
+                <img src="{{ LEPTON_URL }}/modules/lib_lepton/backend_images/{% if(page.tree_status == 0) %}plus{% else %}minus{% endif %}_16.png" onclick="toggle_plus_minus('{{ page.page_id }}');" name="plus_minus_{{ page.page_id }}" alt="+" />
+            </a>
+            {% endif %}
+
+          <a title="{{ TEXT.MODIFY }}" href="{{ alternative_url }}modify.php?page_id={{ page.page_id }}">
+            <img src='{{ LEPTON_URL }}/modules/lib_lepton/backend_images/{{ page.visibility }}_16.png' alt='{{ TEXT.VISIBILITY }}' class='page_list_rights' />
+            {{ page.menu_title }}
+          </a>
+        </td>
+        <td class="list_page_title">{{ TEXT.PAGE_TITLE }}:<br />{{ page.page_title }}</td>
+        <td class="list_page_URL">URL:<br />{{ page.link }}</td>
+        <td class="list_page_id">ID:&nbsp;{{ page.page_id }}</td>
+        <td class="list_actions">{{ TEXT.ACTIONS }}:
+
+          <!-- BEGIN link_view_block -->
+          <a href="{{ LEPTON_URL }}{{ page.link }}" target="_blank" title="{{ TEXT.VIEW }}">
+            <img src="{{ LEPTON_URL }}/modules/lib_lepton/backend_images/view_16.png" alt="{{ TEXT_VIEW }}" />
+          </a>
+          <!-- END link_view_block -->
+
+        </td>
+        <td class="list_actions">
+        {% if not page.visibilty == 'deleted' %} 
+          <a href="{{ alternative_url }}settings.php?page_id={{ page.page_id }}" title="{{ TEXT.SETTINGS }}">
+            <img src="{{ LEPTON_URL }}/modules/lib_lepton/backend_images/settings_16.png" alt="{{ TEXT.SETTINGS }}" />
+          </a>
+        {% else %}
+          <a href="{{ action_url }}restore.php?page_id={{ page.page_id }}" title="{{ TEXT.RESTORE }}">
+            <img src="{{ LEPTON_URL }}/modules/lib_lepton/backend_images/restore_16.png" alt="{{ TEXT.RESTORE }}" />
+          </a>
+        {% endif %} 
+        </td>
+        <td class="list_actions">       
+          <a href="{{ alternative_url }}sections.php?page_id={{ page.page_id }}" title="{{ HEADING.MANAGE_SECTIONS }}">
+            <img src="{{ LEPTON_URL }}/modules/lib_lepton/backend_images/clock_16.png" alt="{{ HEADING.MANAGE_SECTIONS }}" />
+          </a>
+        </td>
+        <td class="list_actions">
+          <!-- BEGIN link_move_up_block -->
+          {% if (num > 1) %}
+          <a href="{{ action_url }}move_up.php?page_id={{ page.page_id }}" title="{{ TEXT.MOVE_UP }}">
+            <img src="{{ LEPTON_URL }}/modules/lib_lepton/backend_images/up_16.png" alt="{{ TEXT.MOVE_UP }}" />
+          </a>
+          {% endif %}
+          <!-- END link_move_up_block -->
+        </td>
+        <td class="list_actions">
+          <!-- BEGIN link_move_down_block -->
+          {% if (num < max_pages) %}
+          <a href="{{ action_url }}move_down.php?page_id={{ page.page_id }}" title="{{ TEXT.MOVE_DOWN }}">
+            <img src="{{ LEPTON_URL }}/modules/lib_lepton/backend_images/down_16.png" alt="{{ TEXT.MOVE_DOWN }}" />
+          </a>
+          {% endif %}
+          <!-- END link_move_down_block -->
+        </td>
+        <td class="list_actions">
+          <!-- BEGIN link_delete_block -->
+          <a href="javascript:confirm_delete_page('{{ MESSAGE.PAGES_DELETE_CONFIRM }}?','{{ ADMIN_URL }}/pages/delete.php?page_id={{ page.page_id }}', '{{ page.page_title }}');" title="{{ TEXT.DELETE }}">
+            <img src="{{ LEPTON_URL }}/modules/lib_lepton/backend_images/delete_16.png" alt="{TEXT_DELETE}" />
+          </a>
+          <!-- END link_delete_block -->
+        </td>
+        <td class="list_actions">
+          <!-- BEGIN link_add_block -->
+          <a href="javascript:add_child_page('{{ page.page_id }}');" title="{{ HEADING.ADD_PAGE }}">
+            <img src="{{ LEPTON_URL }}/modules/lib_lepton/backend_images/siteadd_16.png" name="addpage_{{ page.page_id }}" alt="Add Child Page" />
+          </a>
+
+          <!-- END link_add_block -->
+        </td>
+      </tr>
+    </table>
+ 
+    {# loop thru subpages #}
+    {% if( page.subpages|length > 0) %}
+        {% import _self as pagelink %}
+        <div id="sortable{{ page.page_id }}" name="parent_{{ page.page_id }}">
+        {% for subpage in page.subpages %}
+            {{ pagelink.display_pagelink( subpage, deep+1, loop.index, page.tree_status, page.subpages|length, MANAGE_SECTIONS ) }}
+        {% endfor %}
+         </div>
+        <script>
+            $("#sortable{{ page.page_id }}").sortable({
+			     update : function(event, ui ) {
+                    var sortedIDs = $( this ).sortable( "toArray" );
+                    var parent_name = $( this ).parent().prevObject.attr("name");
+                    sortedIDs.push( parent_name );
+                    console.log( sortedIDs );
+                    Talgos_update_Subpagetree( sortedIDs ); 
+                }   
+			});
+        </script>
+    {% endif %}
+  </li>
+  <!-- END page_sublist_loop_block -->
+</ul>
+<!-- END page_list_loop_block -->
+{% endmacro %}
+
+{% import _self as pagelink %}
+<div id="sortable_ROOT" name="parent_0">
+{% for page in all_pages %}
+    {{ pagelink.display_pagelink( page, 0, loop.index, 1, all_pages|length, MANAGE_SECTIONS ) }}
+{% endfor %}
+</div>
+
+<script>
+    $("#sortable_ROOT").sortable({
+        update : function(event, ui ) {
+            var sortedIDs = $( this ).sortable( "toArray" );
+            var parent_name = $( this ).parent().prevObject.attr("name");
+            sortedIDs.push( parent_name );
+            console.log( sortedIDs );
+            Talgos_update_Subpagetree( sortedIDs ); 
+    }   
+});
+
+// *** Call back
+/**
+ *  Needed for the $.sortable/drag as callback! 
+ */
+var xmlhttp;
+if (window.XMLHttpRequest) {
+    // code for IE7+, Firefox, Chrome, Opera, Safari
+    xmlhttp=new XMLHttpRequest();
+} else {
+    // code for IE6, IE5
+    xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+}
+
+function Talgos_update_Subpagetree( sString ) {
+    
+    xmlhttp.onreadystatechange=function() {
+        if (xmlhttp.readyState==4) {
+            if (xmlhttp.status==200) {
+               var message_box_message_ref = document.getElementById("talgos_pagetree_messagebox_message");
+               message_box_message_ref.innerHTML = xmlhttp.responseText;
+               
+               var message_box_ref = document.getElementById("talgos_pagetree_messagebox");
+               message_box_ref.style.display = "block";
+               
+               return true;
+               // alert ("Response: "+xmlhttp.responseText);
+            }
+        }
+    }
+
+    xmlhttp.open("POST","{{ ADMIN_URL }}/pages/update_subpage_tree.php", true);
+    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+    xmlhttp.send("pages="+sString+"&job=xre234");
+}
+// ***
+
+</script>
+</div><!-- END class container -->
+{% endautoescape %}

@@ -1,0 +1,94 @@
+{#
+/**
+ *	@template		Talgos Backend Theme
+ *	@version		see info.php of this template
+ *	@author			LEPTON project and others for Algos theme, LEPTON project for Talgos theme
+ *	@copyright		2010-2024 LEPTON Project 
+ *	@license		GNU General Public License
+ *	@license terms	see info.php of this template
+ *	@platform		see info.php of this template
+ */
+ #}
+{% autoescape false %}
+<div class="submenu">
+	<ul>
+	{% if true == url_modules %}<li><a class="button" href="{{ ADMIN_URL }}/modules/index.php">{{ MENU.MODULES }}</a></li>{% else %}{% endif %}
+	{% if true == url_languages %}<li><a class="button" href="{{ ADMIN_URL }}/languages/index.php">{{ MENU.LANGUAGES }}</a></li>{% else %}{% endif %}
+	</ul>
+</div>
+{% if true == perm_install %}
+<form name="install" enctype="multipart/form-data" action="{{ action_url }}install.php" method="post">
+	<div class="addons_item">
+		<h2>{{ HEADING.INSTALL_TEMPLATE }}</h2>
+		<div class="addons_task">
+			<input type="file" name="userfile" size="85%" />
+			<script type="text/javascript">
+				document.install.userfile.focus();
+			</script>
+		</div>
+		<div class="addons_button">
+			<input type="submit" name="submit" value="{{ TEXT.INSTALL }}" />
+		</div>
+	</div>
+</form>
+{% else %}
+<div></div>
+{% endif %}
+
+{% if true == perm_uninstall %}
+<form name="uninstall" action="{{ action_url }}uninstall.php" method="post">
+	<div class="addons_item">
+		<input type="hidden" name="leptoken" value="{{ leptoken }}" />
+		<h2>{{ HEADING.UNINSTALL_TEMPLATE }}</h2>
+		<div class="addons_task">
+			<select name="template_id" style="width: 97%;" onchange="ChangeDeleteSelect(this);">
+				<option value="" selected="selected">{{ TEXT.PLEASE_SELECT }}...</option>
+				{% for uninstall in all_templates %}
+					{% if 1 == uninstall.to_delete %}
+						<option value="{{ uninstall.addon_id }}" id="{{ uninstall.addon_id }}_{{ uninstall.delete }}">{{ uninstall.name }}</option>
+					{% endif %}
+				{% endfor %}
+			</select>
+		</div>
+		<div  class="addons_button">
+			<input class="delete" type="submit" name="submit" id="talgos_delete_template" value="{{ TEXT.UNINSTALL }}" />
+		</div>
+	</div>
+</form>
+{% else %}
+<div></div>
+{% endif %}
+
+{% if true == perm_view %}
+<form name="details" action="{{ alternative_url }}details.php" method="post">
+	<div class="addons_item">
+		<h2>{{ HEADING.TEMPLATE_DETAILS }}</h2>
+		<div class="addons_task">
+			<select name="file" style="width: 97%;">
+				<option value="" selected="selected">{{ TEXT.PLEASE_SELECT }}...</option>
+				{% for view in all_templates %}
+					<option value="{{ view.directory }}">{{ view.name }}</option>
+				{% endfor %}
+			</select>
+		</div>
+		<div class="addons_button">
+			<input class="infobtn" type="submit" name="submit" value="{{ TEXT.VIEW_DETAILS }}" />
+		</div>
+	</div>
+</form>
+{% else %}
+<div></div>
+{% endif %}
+<script>
+
+var refDeleteButton = document.getElementById("talgos_delete_template");
+
+function ChangeDeleteSelect( aRef )
+{
+    var iID = aRef.options[ aRef.selectedIndex ].value;
+    var iDel = aRef.options[ aRef.selectedIndex ].id.split("_");
+ 
+    refDeleteButton.style.display = ( iDel[1] == "0" ) ? "none" : "block";
+}
+</script>
+{% endautoescape %}

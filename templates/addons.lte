@@ -1,0 +1,69 @@
+{#
+/**
+ *	@template		Talgos Backend Theme
+ *	@version		see info.php of this template
+ *	@author			LEPTON project and others for Algos theme, LEPTON project for Talgos theme
+ *	@copyright		2010-2024 LEPTON Project 
+ *	@license		GNU General Public License
+ *	@license terms	see info.php of this template
+ *	@platform		see info.php of this template
+ */
+ #}
+{% autoescape false %}
+<div class="right"><span class="button advanced">{{ url_advanced }}</span></div>
+<!-- BEGIN modules_block -->
+<div class="addons_item">
+	<div class="graphic">
+		<a href="{{ ADMIN_URL }}/modules/index.php"><img src="{{ LEPTON_URL }}/modules/lib_lepton/backend_images/modules_48.png" alt="{{ MENU.MODULES }}" /></a>
+	</div>
+	<div class="description">
+		<p><a class="title" href="{{ ADMIN_URL }}/modules/index.php">{{ MENU.MODULES }}</a></p><p>{{ OVERVIEW.MODULES }}</p>
+	</div>
+</div>
+<!-- END modules_block -->
+
+<!-- BEGIN templates_block -->
+<div class="addons_item">
+	<div class="graphic">
+		<a href="{{ ADMIN_URL }}/templates/index.php"><img src="{{ LEPTON_URL }}/modules/lib_lepton/backend_images/templates_48.png" alt="{{ MENU.TEMPLATES }}" /></a>
+	</div>
+	<div class="description">
+		<p><a class="title" href="{{ ADMIN_URL }}/templates/index.php">{{ MENU.TEMPLATES }}</a></p><p>{{ OVERVIEW.TEMPLATES }}</p>
+	</div>
+</div>
+<!-- END templates_block -->
+
+<!-- BEGIN languages_block -->
+<div class="addons_item">
+	<div class="graphic">
+		<a href="{{ ADMIN_URL }}/languages/index.php"><img src="{{ LEPTON_URL }}/modules/lib_lepton/backend_images/languages_50.png" alt="{{ MENU.LANGUAGES }}" /></a>
+	</div>
+	<div class="description">
+		<p><a class="title" href="{{ ADMIN_URL }}/languages/index.php">{{ MENU.LANGUAGES }}</a></p><p>{{ OVERVIEW.LANGUAGES }}</p>
+	</div>
+</div>
+<!-- END languages_block -->
+
+<!-- BEGIN reload_block -->
+<div class="addons_item" {{ display_reload }}>
+	<div class="graphic">
+		<img src="{{ LEPTON_URL }}/modules/lib_lepton/backend_images/admintools_50.png" alt="{{ TEXT.ADMIN }} {{ TEXT.SETTINGS }}" />
+	</div>
+	<div class="description">
+		<div class="title"><p>{{ TEXT.ADMIN }} {{ TEXT.SETTINGS }}</p></div>
+		<p>{{ MESSAGE.ADDON_RELOAD }}</p>
+		<form action="{{ RELOAD_URL }}" method="post">
+			<div class="pad_b">
+			<input {% if false == display_modules %}style="display: none;"{% endif %} type="checkbox" name="reload_modules" id="reload_modules" value="true" />
+			<label {% if false == display_modules %}style="display: none;"{% endif %} for="reload_modules">{{ MENU.MODULES }}</label>
+			<input {% if false == display_templates %}style="display: none;"{% endif %} type="checkbox" name="reload_templates" id="reload_templates" value="true" />
+			<label {% if false == display_templates %}style="display: none;"{% endif %} for="reload_templates">{{ MENU.TEMPLATES }}</label>
+			<input {% if false == display_languages %}style="display: none;"{% endif %} type="checkbox" name="reload_languages" id="reload_languages" value="true" />
+			<label {% if false == display_languages %}style="display: none;"{% endif %} for="reload_languages">{{ MENU.LANGUAGES }}</label>
+			</div>
+			<input type="submit" name="submit" value="{{ TEXT.RELOAD }}" />
+		</form>
+	</div>
+</div>
+<!-- END reload_block -->
+{% endautoescape %}

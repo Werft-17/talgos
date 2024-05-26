@@ -1,0 +1,31 @@
+{#
+/**
+ *	@template		Talgos Backend Theme
+ *	@version		see info.php of this template
+ *	@author			LEPTON project and others for Algos theme, LEPTON project for Talgos theme
+ *	@copyright		2010-2024 LEPTON Project 
+ *	@license		GNU General Public License
+ *	@license terms	see info.php of this template
+ *	@platform		see info.php of this template
+ */
+ #}
+{% autoescape false %}
+<div class="start_frame">
+	<!-- BEGIN tool_list_block -->
+	{% if TOOL_NONE_FOUND != "" %}
+		{{ TOOL_NONE_FOUND }}
+	{% else %}
+		{% for tool in all_tools %}
+		<div class="start_item">
+			<div class="graphic">
+				<a class= "title" href="{{ ADMIN_URL }}/admintools/tool.php?tool={{ tool.directory }}"><img src="{{ LEPTON_URL}}/modules/{{ tool.directory }}/icon.png" alt="tool" style="width: 48px;" /></a>
+			</div>
+			<div class="description">
+				<p><a class="title" href="{{ ADMIN_URL }}/admintools/tool.php?tool={{ tool.directory }}">{{ tool.name }}</a></p><p>{{ tool.description }}</p>
+			</div>
+		</div>
+		{% endfor %}			
+	{% endif %}			
+	<!-- END tool_list_block -->
+</div>
+{% endautoescape %}

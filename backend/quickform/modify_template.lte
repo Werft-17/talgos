@@ -1,0 +1,49 @@
+{#
+/**
+ *
+ *	@module			quickform
+ *	@version		see info.php of this module
+ *	@authors		LEPTON project
+ *	@copyright		2010-2024 LEPTON project
+ *	@license		GNU General Public License
+ *	@license terms	see info.php of this module
+ *	@platform		see info.php of this module
+ *
+ *
+ */
+ #}
+{% autoescape false %}
+{{ edit_area }}
+<!-- Talgos -->
+<div class="qform">
+	<div class="warning_message">{{ STATUSMESSAGE }}</div>
+
+	<form action="{{ form_action }}" method="post">
+		<input type="hidden" name="page_id" value="{{ page_id }}" />
+		<input type="hidden" name="section_id" value="{{ section_id }}" />
+		<input type="hidden" name="leptoken" value="{{ leptoken }}" />
+		<input type="hidden" name="action" value="save" />
+
+		<div class="ui two columns stackable grid">
+			<div class="left aligned column">
+				<h2>{{ oQUICKFORM.language.EDIT_TEMPLATE }}</h2>
+			</div>	
+			<div class="right aligned column">
+				<button class="button" onclick="window.open('{{ urls.help }}','_blank');return false;">{{ MENU.HELP }}</button>
+			</div>
+		</div>
+
+		<div class="pad_b">
+			<label>{{ oQUICKFORM.language.SAVEAS }}: </label>
+			<input type="text" name="template_name" value="{{ template_name }}" class="textfield" />
+		</div>
+
+		<div class="pad_b">
+			<textarea id="code_area" name="template_data" cols="100" rows="30" wrap="VIRTUAL" style="margin:2px;width:100%;">{{ template_data|escape }}</textarea>
+		</div>
+
+		<input type="submit" name="submit" value="{{ TEXT.SAVE }}" class="add" />
+		<input type="reset" name="reset" onclick="javascript: window.location = '{{ ADMIN_URL }}/pages/modify.php?page_id={{ page_id }}';" value="{{ TEXT.CANCEL }}" />
+	</form>
+</div>
+{% endautoescape %}

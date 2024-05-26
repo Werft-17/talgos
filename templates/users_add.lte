@@ -1,0 +1,50 @@
+{#
+/**
+ *	@template		Talgos Backend Theme
+ *	@version		see info.php of this template
+ *	@author			LEPTON project and others for Algos theme, LEPTON project for Talgos theme
+ *	@copyright		2010-2024 LEPTON Project 
+ *	@license		GNU General Public License
+ *	@license terms	see info.php of this template
+ *	@platform		see info.php of this template
+ */
+ #}
+{% autoescape false %}
+<div class="submenu">
+	<ul>
+		<li><a class="button" href="{{ ADMIN_URL }}/groups/index.php">{{ TEXT.MANAGE_GROUPS }}</a></li>
+	</ul>
+</div>
+<div class="container">
+	<form name="users" action="{{ alternative_url }}users.php" method="post">
+		<input type="hidden" name="job" value="delete" />
+		<h2>{{ HEADING.MODIFY_DELETE_USER }}</h2>
+		<select name="user_id" class="select_groups">
+			<option value="" selected="selected">{{ TEXT.PLEASE_SELECT }}...</option>
+			{% for ref in all_users %}
+			<option value="{{ ref.user_id }}">{{ ref.display_name }}</option>
+			{% endfor %}
+		</select>
+		<div class="submenu">
+			<ul>
+				{% if true == perm_modify %}<li><input type="submit" name="modify" value="{{ TEXT.MODIFY }}" class="modify" /></li>{% else %}{% endif %}
+				{% if true == perm_delete %}<li><input type="submit" name="delete" value="{{ TEXT.DELETE }}" onclick="return confirm('{{ MESSAGE.USERS_CONFIRM_DELETE }}');" class="delete" formaction="{{ action_url }}save.php" formmethod="post" /></li>{% else %}{% endif %}
+			</ul>
+		</div>
+	</form>
+</div>
+
+{% if true == perm_add %}
+<div class="container">
+	<h2>{{ HEADING.ADD_USER }}</h2>
+	<form name="{{ form_name }}" action="{{ action_url }}add.php" method="post" class="add">
+		<input type="hidden" name="user_id" value="{{ current_user.user_id }}" />
+		<input type="hidden" name="username_fieldname" value="{{ username_fieldname }}" />
+		<p><b>{{ NEWUSERHINT }}</b></p>
+		{% include "@theme/users_form.lte" %}		
+	</form>
+</div>
+{% else %}
+<div></div>
+{% endif %}
+{% endautoescape %}

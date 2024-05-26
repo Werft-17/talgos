@@ -1,0 +1,52 @@
+{#
+/**
+ *	@template		Talgos Backend Theme
+ *	@version		see info.php of this template
+ *	@author			LEPTON project and others for Algos theme, LEPTON project for Talgos theme
+ *	@copyright		2010-2024 LEPTON Project 
+ *	@license		GNU General Public License
+ *	@license terms	see info.php of this template
+ *	@platform		see info.php of this template
+ */
+ #}
+{% autoescape false %}
+<div class="submenu">
+	<ul>
+		<li><a class="button" href="{{ ADMIN_URL }}/users/index.php">{{ TEXT.MANAGE_USERS }}</a></li>
+	</ul>
+</div>
+
+<div class="container">
+	<form name="groups" action="{{ alternative_url }}groups.php" method="post">
+		<input type="hidden" name="job" value="delete" />
+		<h2>{{ HEADING.MODIFY_DELETE_GROUP }}</h2>
+		<select name="group_id" class="select_groups">
+			<option value="" selected="selected">{{ TEXT.PLEASE_SELECT }}...</option>
+			{% for ref in all_groups %}
+				<option value="{{ ref.group_id }}" >{{ ref.name }}</option>
+			{% endfor %}
+		</select>
+		<div class="submenu">
+			<ul>
+				{% if true == perm_modify %}<li><input type="submit" name="modify" value="{{ TEXT.MODIFY }}" class="modify" /></li>{% else %}{% endif %}
+				{% if true == perm_modify %}<li><input type="submit" name="copy" value="{{ THEME.COPY }}" class="copy" formaction="{{ action_url }}save.php" formmethod="post" /></li>{% else %}{% endif %}
+				{% if true == perm_delete %}<li><input class="reset" type="submit" name="delete" value="{{ TEXT.DELETE }}" onclick="return confirm('{{ MESSAGE.GROUPS_CONFIRM_DELETE }}');" class="delete" formaction="{{ action_url }}save.php" formmethod="post" /></li>{% else %}{% endif %}
+			</ul>
+		</div>
+	</form>
+</div>
+
+{% if true == perm_add %}
+<div class="container">
+	<h2>{{ HEADING.ADD_GROUP }}</h2>
+	<div class="container groups">
+		<form name="add" action="{{ action_url }}save.php" method="post" class="add">
+			<input type="hidden" name="group_id" value="{{ group_id }}" />
+			{% include "@theme/groups_form.lte" %}		
+		</form>
+	</div>
+</div>
+{% else %}
+<div></div>
+{% endif %}
+{% endautoescape %}

@@ -1,0 +1,40 @@
+{#
+/**
+ *	@template		Talgos Backend Theme
+ *	@version		see info.php of this template
+ *	@author			LEPTON project and others for Algos theme, LEPTON project for Talgos theme
+ *	@copyright		2010-2024 LEPTON Project 
+ *	@license		GNU General Public License
+ *	@license terms	see info.php of this template
+ *	@platform		see info.php of this template
+ */
+ #}
+ 
+{% autoescape false %}
+<div class="jsadmin hide"></div>
+<div class="pages_tree container">
+	<h2>{{ HEADING.MODIFY_DELETE_PAGE }}</h2>
+	<div class="pages_list">
+		<table summary="{{ HEADING_MODIFY_DELETE_PAGE }}">
+		  <tr class="pages_list_header">
+			<td class="header_list_menu_title">
+			  {{ TEXT.VISIBILITY }} / {{ TEXT.MENU_TITLE }}:
+			</td>
+			<td class="header_list_page_title">
+			  {{ TEXT.PAGE_TITLE }}:
+			</td>
+			<td class="header_list_page_URL">
+			  URL:
+			</td>
+			<td class="header_list_page_id">
+			  ID:
+			</td>
+			<td class="header_list_actions">
+			  {{ TEXT.ACTIONS }}:
+			</td>
+		  </tr>
+		</table>
+		{# page tree loop #}
+		{% include "@theme/pages_tree_loop.lte" %}
+	</div>
+{% endautoescape %}

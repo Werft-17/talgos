@@ -1,0 +1,70 @@
+{#
+/**
+ *	@template		Talgos Backend Theme
+ *	@version		see info.php of this template
+ *	@author			LEPTON project and others for Algos theme, LEPTON project for Talgos theme
+ *	@copyright		2010-2024 LEPTON Project 
+ *	@license		GNU General Public License
+ *	@license terms	see info.php of this template
+ *	@platform		see info.php of this template
+ */
+ #}
+{% autoescape false %}
+<!DOCTYPE html>
+<html>
+<head>
+<title>{{ BACKEND_TITLE }}&raquo;{{ TEXT_ADMINISTRATION }}-{{ SECTION_NAME }}</title>
+<meta http-equiv="content-type" content="text/html; charset={{ CHARSET }}" />
+<meta http-equiv="content-language" content="{{ LANGUAGE }}" />
+<meta name="description" content="{{ TEXT_ADMINISTRATION }}" />
+<meta name="keywords" content="{{ TEXT_ADMINISTRATION }}" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="format-detection" content="telephone=yes" />
+<meta name="HandheldFriendly" content="true" />
+<meta name="MobileOptimized" content="1200" />
+<link rel="shortcut icon" href="{{ LEPTON_URL }}/modules/lib_lepton/backend_images/favicon.ico" />
+<link rel="stylesheet" type="text/css" href="{{ THEME_URL }}/css/theme.css"  media="all" />
+{{ GET_PAGE_HEADERS }}
+<script>
+function confirm_link(message, url) { 
+	if(confirm(message)) location.href = url + "&amp;leptokh=#-!leptoken-!#";
+}
+var LEPTON_URL = "{{ LEPTON_URL }}";
+</script>
+</head>
+<body>
+<div id="admin_header">
+	<div id="header">
+		<div id="website_title">
+			<a href="{{ ADMIN_URL }}/start/index.php?CallByIcon=1" title="{{ TITLE_START }}">
+				{{ BACKEND_TITLE }} - {{ TEXT_ADMINISTRATION }}
+			</a>
+		</div>
+		<div id="top_menu">
+			<p class="version">LEPTON CMS Version {{ LEPTON_VERSION }}{{ SUBVERSION }}<br />Backend Theme {{ THEME_NAME }} {{ THEME_VERSION }}</p>
+			<ul>
+				<li><a href="{{ ADMIN_URL }}/start/index.php?CallByIcon=1" title="{{ TITLE_START }}">Home</a></li>
+				<li><a href="{{ URL_VIEW }}" target="_blank" title="{{ TITLE_VIEW }}">{{ TITLE_VIEW }}</a></li>
+				<li><a href="{{ ADMIN_URL }}/logout/index.php" title="{{ TITLE_LOGOUT }}"> X&nbsp;&nbsp;{{ TITLE_LOGOUT }}</a></li>
+			</ul>
+		</div>
+	</div>
+	<br class="clear" />
+	<div id="main_menu">
+		<ul>
+			<!-- BEGIN linkBlock -->
+		{% if true == p_pages %}<li><a class="item" href="{{ ADMIN_URL }}/pages/index.php">{{ MENU.PAGES }}</a></li>{% endif %}								
+		{% if true == p_media %}<li><a class="item" href="{{ ADMIN_URL }}/media/index.php">{{ MENU.MEDIA }}</a></li>{% endif %}			
+		{% if true == p_addons %}<li><a class="item" href="{{ ADMIN_URL }}/addons/index.php">{{ MENU.ADDONS }}</a></li>{% endif %}
+		{% if true == p_pages %}<li><a class="item" href="{{ ADMIN_URL }}/preferences/index.php">{{ MENU.PREFERENCES }}</a></li>{% endif %}
+		{% if true == p_settings %}<li><a class="item" href="{{ ADMIN_URL }}/settings/index.php">{{ MENU.SETTINGS }}</a></li>{% endif %}								
+		{% if true == p_admintools %}<li><a class="item" href="{{ ADMIN_URL }}/admintools/index.php">{{ MENU.ADMINTOOLS }}</a></li>{% endif %}
+		{% if true == p_access %}<li><a class="item" href="{{ ADMIN_URL }}/access/index.php">{{ MENU.ACCESS }}</a></li>{% endif %}			
+			<!-- END linkBlock -->
+		</ul>
+	</div>
+</div>
+<div id="container">
+	<div id="content_container">
+		<div class="content">
+{% endautoescape %}	

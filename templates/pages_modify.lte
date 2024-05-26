@@ -1,0 +1,59 @@
+{#
+/**
+ *	@template		Talgos Backend Theme
+ *	@version		see info.php of this template
+ *	@author			LEPTON project and others for Algos theme, LEPTON project for Talgos theme
+ *	@copyright		2010-2020 LEPTON Project 
+ *	@license		GNU General Public License
+ *	@license terms	see info.php of this template
+ *	@platform		see info.php of this template
+ */
+ #}
+{% autoescape false %}
+<div class="container">
+	<h2>{{ HEADING.MODIFY_PAGE }}</h2>
+	<div class="page_modify_head">
+		<div class="page_modify_info">
+			{{ TEXT.CURRENT_PAGE }}: <b>{{ page.page_title }}</b> - ID: {{ page.page_id }}<br />
+			<!-- BEGIN show_modify_block -->
+				{{ MESSAGE.PAGES_LAST_MODIFIED }} {{ MODIFIED_BY }} ({{ MODIFIED_BY_USERNAME }}), {{ MODIFIED_WHEN }}
+			<!-- END show_modify_block -->
+		</div>
+		<div class="page_modify_buttons">
+		{% if( true == allowedPageSettings ) %}
+			<span class="button settings"><a href="{{ oTALG.alternative_url }}settings.php?page_id={{ page.page_id }}">{{ TEXT.CHANGE_SETTINGS }}</a></span>
+		{% endif %}
+		{% if( true == MANAGE_SECTIONS ) %}
+			<span class="button sections"><a href="{{ oTALG.alternative_url }}sections.php?page_id={{ page.page_id }}">{{ HEADING.MANAGE_SECTIONS }}</a></span>		
+		{% endif %}
+		</div>
+	</div>
+	{% if(all_sections|length == 0) %}
+	<div>&nbsp;</div>
+	{% else %}	
+		{% for section in all_sections %}
+			<div class="section_info" id="{{ SEC_ANCHOR }}{{ section.section_id }}">
+				<span class="section_details">{{ TEXT.BLOCK }}:</span>
+				&nbsp;{{ section.block_name }} |&nbsp;
+				<span class="section_details">MODUL:</span>
+				&nbsp;{{ section.module }} |&nbsp;
+				<span class="section_details">ID:</span>
+				&nbsp;{{ section.section_id }} |&nbsp;
+				<span class="section_details">NAME:</span>
+				&nbsp;{{ section.name }}
+			</div>
+			{{ section.content }}
+			<div style="height:20px;width:100%;"> </div>
+		{% endfor %}
+<script>
+$(document).ready(function(){
+	if (( {{ last_edit_section }} > 0 ) && ( {{ all_sections|length }} > 1 ))
+	{
+		$("body, html").animate({ scrollTop: $("#{{ SEC_ANCHOR }}{{ last_edit_section }}").offset().top }, 600);
+	}
+});
+</script>
+
+	{% endif %}	
+</div>	
+{% endautoescape %}

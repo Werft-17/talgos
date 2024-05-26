@@ -1,0 +1,55 @@
+/**
+ * @module          Cookie
+ * @author          cms-lab
+ * @copyright       2010-2024 cms-lab
+ * @link            https://cms-lab.com
+ * @license         custom license: https://cms-lab.com/_documentation/cookie/license.php
+ * @license_terms   see: https://cms-lab.com/_documentation/cookie/license.php
+ *
+ */
+
+
+[type="checkbox"] {
+	vertical-align: middle !important;
+}
+
+[type="color"] {
+	min-height: 38px;
+	width: 100%;
+	background: #fff;
+	border-radius: .28571429rem;
+}
+
+/* fix for talgos */
+ .ui.grid {
+	width: 100%;
+}
+
+.ui.form .info.message {
+	display: block !important;
+}
+
+.info {
+	padding-left: 0;
+	background: none;
+}
+
+
+.spacer1 {
+	width: 100%;
+	height: 10px;
+}
+
+.spacer2 {
+	width: 100%;
+	height: 20px;
+}
+
+.spacer3 {
+	width: 100%;
+	height: 30px;
+}
+.spacer4 {
+	width: 100%;
+	height: 40px;
+}

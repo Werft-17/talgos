@@ -1,0 +1,382 @@
+{#
+/**
+ * This file is part of an ADDON for use with LEPTON Core.
+ * This ADDON is released under the GNU GPL.
+ * Additional license terms can be seen in the info.php of this module.
+ *
+ *
+ *	@module			captcha_control Talgos Theme
+ *	@version		see info.php of this module
+ *	@authors		LEPTON Project, W. Studer
+ *	@copyright		2010-2024 LEPTON Project
+ *	@link			https://lepton-cms.org
+ *	@license		https://gnu.org/licenses/gpl.html
+ *	@license_terms	please see info.php of this module
+ *	@platform		see info.php of this module
+ *
+ *
+ */
+ #}
+
+{% autoescape false %}
+<div class="talgos_container">
+	<div id="module">
+		<div class="ui basic segment">
+			<div class="ui two column middle aligned grid">
+				<div class="ten wide column">
+					<h3 class="ui blue header">
+						<div class="content">{{ oCAPTCHA_CONTROL.module_name }}</div>
+					</h3>
+				</div>
+				<div class="six wide column">
+					<form>
+						<div class="ui right aligned container">
+							<button class="ui blue basic button"
+									type="submit"
+									name="btn_showmodinfo"
+									value="{{ oCAPTCHA_CONTROL.module_directory }}"
+									title="{{ TEXT.SHOW_MODINFO }}"
+									formaction="{{ LEPTON_URL }}/backend/modules/module_info.php"
+									formmethod="post"
+							><i class="info icon"></i>{{ TEXT.SHOW_MODINFO }}</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<div class="ui divider"></div>
+
+{% if MESSAGE|length > 0 %}
+		<div class="ui basic segment">
+			<div class="ui {% if MESSAGE.status is same as(true) %}info{% else %}warning{% endif %} message">
+				<p class="heading_text">{{ MESSAGE.text }}</p>
+			</div>
+		</div>
+{% endif %}
+
+		<div class="ui basic segment">
+			<div class="ui row">
+				<h4>{{ oCAPTCHA_CONTROL.language.HEADING }}</h4>
+			</div>
+			<div class="ui info green message">
+				<p class="heading_text">{{ oCAPTCHA_CONTROL.language.HOWTO }}</p>
+				<p class="heading_text">{{ oCAPTCHA_CONTROL.language.CAPTCHA_EXP }}</p>
+			</div>
+		</div>
+
+
+	<form class="ui form"
+		id="{{ oCAPTCHA_CONTROL.module_directory }}"
+		name="{{ oCAPTCHA_CONTROL.module_directory }}"
+		method="post"
+		action="{{ ADMIN_URL }}/admintools/tool.php?tool={{ oCAPTCHA_CONTROL.module_directory }}"
+	>
+		<input type="hidden" name="hash" value="{{ hash }}" />
+
+		<div class="ui basic segment">
+			<div class="ui row">
+				<h5>{{ oCAPTCHA_CONTROL.language.USE_CAPTCHA }}</h5>
+			</div>
+			<div class="ui row">
+				<table class="captcha_control">
+					<tr>
+						<td class="colA">&nbsp;</td>
+						<td>
+							<label>
+								<input type="radio" {% if DATA.enabled_captcha == '1' %}checked="checked"{% endif %}
+										name="enabled_captcha"
+										value="1"
+									/>{{ oCAPTCHA_CONTROL.language.ENABLED }}</label>
+							<label>
+								<input type="radio" {% if DATA.enabled_captcha == '0' %}checked="checked"{% endif %}
+										name="enabled_captcha"
+										value="0"
+									/>{{ oCAPTCHA_CONTROL.language.DISABLED }}</label>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		{% if DATA.enabled_captcha == 1 %}
+		<div class="ui divider"></div>
+
+		<div class="ui basic segment">
+			<div class="ui row">
+				<h5>{{ oCAPTCHA_CONTROL.language.ASP_CONF }}</h5>
+			</div>
+			<div class="ui row">
+				<table class="captcha_control">
+					<tr>
+						<td class="colA">
+							{{ oCAPTCHA_CONTROL.language.ASP_TEXT }}
+						</td>
+						<td>
+							<label>
+								<input type="radio" {% if DATA.enabled_asp == '1' %}checked="checked"{% endif %}
+										name="enabled_asp"
+										value="1"
+									/>{{ oCAPTCHA_CONTROL.language.ENABLED }}</label>
+							<label>
+								<input type="radio" {% if DATA.enabled_asp == '0' %}checked="checked"{% endif %}
+										name="enabled_asp"
+										value="0"
+									/>{{ oCAPTCHA_CONTROL.language.DISABLED }}</label>
+						</td>
+					</tr>
+					<tr>
+						<td class="colA">&nbsp;</td>
+						<td class="smallfont">{{ oCAPTCHA_CONTROL.language.ASP_EXP }}</td>
+					</tr>
+					<tr name="asp_detail" class="{% if DATA.enabled_asp == '0' %}hidden{% endif %}">
+						<td class="colA">
+							asp_session_min_age
+						</td>
+						<td>
+							<input type="number"
+									name="asp_session_min_age"
+									value="{{ DATA.asp_session_min_age }}"
+									min="1"
+									max="999"
+								/>
+						</td>
+					</tr>
+					<tr name="asp_detail" class="{% if DATA.enabled_asp == '0' %}hidden{% endif %}">
+						<td class="colA">
+							asp_view_min_age
+						</td>
+						<td>
+							<input type="number"
+									name="asp_view_min_age"
+									value="{{ DATA.asp_view_min_age }}"
+									min="1"
+									max="999"
+								/>
+						</td>
+					</tr>
+					<tr name="asp_detail" class="{% if DATA.enabled_asp == '0' %}hidden{% endif %}">
+						<td class="colA">
+							asp_input_min_age
+						</td>
+						<td>
+							<input type="number"
+									name="asp_input_min_age"
+									value="{{ DATA.asp_input_min_age }}"
+									min="1"
+									max="999"
+								/>
+						</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+
+		<div class="ui divider"></div>
+
+		<div class="ui basic segment">
+			<div class="ui row">
+				<h5>{{ oCAPTCHA_CONTROL.language.CAPTCHA_TYPE }}</h5>
+			</div>
+			<div class="spacer2"></div>
+
+			<div class="ui grid">
+			{% for key, captcha in USEABLE_PLUGINS %}
+				<div class="ui four wide column">
+					<label>
+						<div class="{{ key }} plugin {% if captcha.DEPRECATED is same as(true) %}deprecated{% endif %} {% if DATA.captcha_type == key %}active{% endif %}" >
+							<h4>{{ key }}</h4>
+							<input type="radio" {% if DATA.captcha_type == key %}checked="checked"{% endif %}
+									name="captcha_type"
+									value="{{ key }}"
+								/>
+							<img alt="captcha: {{ key }} - {{ captcha.TEXT }}"
+								title="captcha: {{ key }} - {{ captcha.TEXT }}"
+								id="captcha_image"
+								src="{{ LEPTON_URL }}/modules/captcha_control/plugins/{{ key }}/images/{{ key }}.png"
+								width="150px"
+								style="border: 1px dotted black"
+								/>
+							<p><br />{{ captcha.TEXT }}<br /></p>
+							{% if captcha.DEPRECATED is same as(true) %}
+								<p class="deprecated">{{ oCAPTCHA_CONTROL.language.DEPRECATED }}</p>
+							{% endif %}
+						</div>
+					</label>
+				</div>
+			{% endfor %}
+			</div>
+		</div>
+
+		<div class="ui divider"></div>
+
+		<div class="ui basic segment">
+			<div class="ui row">
+				<h5>{{ oCAPTCHA_CONTROL.language.GENERIC_CONF }}</h5>
+			</div>
+			<div class="ui row">
+				<table class="captcha_control">
+					<tr>
+						<td class="colA">
+							{{ oCAPTCHA_CONTROL.language.RELOAD_TYPE }}
+						</td>
+						<td>
+							<select name="reload_type">
+								<option value="IFRAME"
+								{% if GENERIC.reload_type != 'JS' %}selected="selected"{% endif %}
+									>{{ oCAPTCHA_CONTROL.language.RELOAD_TYPE_IFRAME }}</option>
+								<option value="JS"
+								{% if GENERIC.reload_type == 'JS' %}selected="selected"{% endif %}
+									>{{ oCAPTCHA_CONTROL.language.RELOAD_TYPE_JS }}</option>
+							</select>
+						</td>
+					</tr>
+
+					<tr>
+						<td colspan="2">&nbsp;</td>
+					</tr>
+
+					<tr>
+						<td class="colA">
+							{{ oCAPTCHA_CONTROL.language.CAPTCHA_SPEECH }}
+						</td>
+						<td>
+							<label for="cptcha_speech_on">{{ oCAPTCHA_CONTROL.language.ENABLED }}</label>
+								<input type="radio" {% if GENERIC.captcha_speech == '1' %}checked="checked"{% endif %}
+										name="captcha_speech"
+										value="1"
+										id="cptcha_speech_on"
+									/>
+							<label for="cptcha_speech_off">{{ oCAPTCHA_CONTROL.language.DISABLED }}</label>
+								<input type="radio" {% if GENERIC.captcha_speech == '0' %}checked="checked"{% endif %}
+										name="captcha_speech"
+										value="0"
+										id="cptcha_speech_off"
+									/>
+						</td>
+					</tr>
+				</table>
+
+				<fieldset id="FIELDSET_SPEECH" {% if GENERIC.captcha_speech == '0' %}class="hidden"{% endif %}>
+					<table class="captcha_control">
+						<tr>
+							<td class="colA">
+								{{ oCAPTCHA_CONTROL.language.CAPTCHA_SPEECH_RATE }}
+							</td>
+							<td>
+								<label>
+									<input type="number"
+											name="captcha_speech_rate"
+											value="{{ GENERIC.captcha_speech_rate }}"
+											min="1" max="10" step="1"
+										/>
+							</td>
+						</tr>
+						<tr>
+							<td class="colA">
+								{{ oCAPTCHA_CONTROL.language.CAPTCHA_SPEECH_PITCH }}
+							</td>
+							<td>
+								<label>
+									<input type="number"
+											name="captcha_speech_pitch"
+											value="{{ GENERIC.captcha_speech_pitch }}"
+											min="1" max="5" step="1"
+										/>
+							</td>
+						</tr>
+					</table>
+				</fieldset>
+
+			</div>
+		</div>
+
+
+		<div class="ui divider"></div>
+
+		<div class="ui basic segment">
+			<div class="ui row">
+				<h5>{{ oCAPTCHA_CONTROL.language.CAPTCHA_CONF }}: {{ DATA.captcha_type }}</h5>
+			</div>
+			<div class="ui row">
+				{% if PLUGIN|length %}
+					<div name="captcha_conf" class="captcha_box">
+					{% include "@captcha_plugin/" ~ DATA.captcha_type ~ ".lte" %}
+					</div>
+				{% endif %}
+				
+				<div class="spacer1"></div>
+
+				{% if USEABLE_PLUGINS[ DATA.captcha_type ].DEPRECATED is same as(true) %}
+					<div name="captcha_deprecated" class="ui info red message show captcha_box">
+						<p class="heading_text">{{ oCAPTCHA_CONTROL.language.CAPTCHA_DEPRECATED }}</p>
+					</div>
+				{% endif %}
+
+				<div name="captcha_conf_save" class="ui info red message hidden captcha_box">
+					<p class="heading_text">{{ oCAPTCHA_CONTROL.language.PLEASE_SAVE }}</p>
+				</div>
+
+				<div name="captcha_no_conf" class="ui info green message {% if PLUGIN|length %}hidden{% else %}show{% endif %} captcha_box">
+					<p class="heading_text">{{ oCAPTCHA_CONTROL.language.NO_CAPTCHA_CONF }}</p>
+				</div>
+			</div>
+		</div>
+		{% endif %}
+
+					<div class="submenu">
+					<ul>
+					<li><button class="menubutton" type="submit" name="save" value="save">{{ TEXT.SAVE }}</button></li>
+					{% if DATA.enabled_captcha == 1 %}
+					<li><button class="menubutton" type="submit" name="run" value="run">{{ oCAPTCHA_CONTROL.language.TEST }}</button></li>
+					{% endif %}
+					</ul>
+					</div>
+		</form>
+
+	</div>
+</div>
+
+<script type="text/javascript">
+	// show/hide asp detail rows depending on asp enabled flag
+	$( 'input[type=radio][name=enabled_asp]' ).change(function() {
+		$( 'tr[name=asp_detail]' ).toggleClass( "hidden" );
+	});
+
+	// show/hide speech configuration fields depending on speech enabled flag
+	$( 'input[type=radio][name=captcha_speech]' ).change(function() {
+		$( 'fieldset#FIELDSET_SPEECH' ).toggleClass( "hidden" );
+	});
+
+	// hide captcha config on captcha type change
+	$( 'input[type=radio][name=captcha_type]' ).change(function() {
+		var captcha_type = $(this).val();
+
+		// first hide all boxes
+		$( 'div.captcha_box' ).addClass( "hidden" );
+		$( 'div.captcha_box' ).removeClass( "show" );
+
+		// then switch on needed boxes
+		if ( "{{ DATA.captcha_type }}" == captcha_type ) {
+			$( 'div[name=captcha_conf]' ).addClass( "show" );
+			if ( "{{ USEABLE_PLUGINS[ DATA.captcha_type ].DEPRECATED }}" == true ) {
+				$( 'div[name=captcha_deprecated]' ).addClass( "show" );
+			}
+			if ( "{{ PLUGIN|length == 0 }}" == true ) {
+				$( 'div[name=captcha_no_conf]' ).addClass( "show" );
+			}
+		} else {
+			$( 'div[name=captcha_conf_save]' ).addClass( "show" );
+		}
+
+		// also remove active of all plugin divs
+		$( 'div.plugin' ).removeClass( "active" );
+		// then add it on current
+		$(this).parent().addClass( "active" );
+
+		// and also remove the required attributes
+		// Note: Switching back does not reset this attribute!
+		$( 'div.captcha_box *' ).removeAttr('required');
+	});
+</script>
+
+{% endautoescape %}

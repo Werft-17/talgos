@@ -1,0 +1,80 @@
+{#
+/**
+ *	@module			initial_page
+ *	@version		see info.php of this module
+ *	@author			LEPTON project
+ *	@copyright		2010-2024 LEPTON project
+ *	@link			https://lepton-cms.org
+ *	@license		copyright, all rights reserved
+ *	@license_terms	please see info.php of this module 
+ *	@platform		see info.php of this module
+ */
+ #}
+ 
+{% autoescape false %}
+<div class="talgos_container">
+	<div id="module">
+		<div class="ui basic segment">
+			<h3>{{ oINITIAL_PAGE.module_name }}</h3>
+			<form class="ui form right">
+				<div class="submenu">
+					<ul>
+						<li>
+							<button class="menubutton"
+									type="submit"
+									name="btn_showmodinfo"
+									value="{{ oINITIAL_PAGE.module_directory }}"
+									title="{{ TEXT.SHOW_MODINFO }}"
+									formaction="{{ LEPTON_URL }}/backend/modules/module_info.php"
+									formmethod="post"
+								>{{ TEXT.SHOW_MODINFO }}</button>
+						</li>
+					</ul>
+				</div>
+			</form>
+		</div>
+
+	{% if message is defined %}
+		<div class="ui basic segment">
+			<div class="ui {% if message.STATUS is same as(true) %}info{% else %}warning{% endif %} message">{{ oINITIAL_PAGE.language[ message.MESSAGE_ID ] }}</div>
+		</div>
+	{% endif %}
+
+		<form class="ui form"
+			id="{{ oINITIAL_PAGE.module_directory }}"
+			method="post"
+			action="{{ ADMIN_URL }}/admintools/tool.php?tool={{ oINITIAL_PAGE.module_directory }}"
+		>
+			<input type='hidden' name='job'  value='save' />
+			<input type='hidden' name='hash' value='{{ hash }}' />
+
+			<div class="ui basic segment">
+				<table class="pages_list_header">
+					<thead>
+						<tr>
+							<td class="header_list_menu_title">{{ oINITIAL_PAGE.language.label_user }}</th>
+							<td class="header_list_menu_title">{{ oINITIAL_PAGE.language.label_page }}</th>
+							<td class="header_list_menu_title">{{ oINITIAL_PAGE.language.label_param }}</th>
+						</tr>
+					</thead>
+					<tbody class="initial_page">
+					{% for data in aAllUsers %}
+						<tr>
+							<td>{{ data.user_id }} {{ data.username }}</td>
+							<td>{{ data.select }}</td>
+							<td><input class="param" type="text" name="param[{{ data.user_id }}]" value="{{ data.temp_info.page_param }}" /></td>
+						</tr>
+					{% endfor %}
+					</tbody>
+				</table>
+
+				<div class="spacer2"></div>
+
+				<input type="submit" class="save_section" value="{{ TEXT.SAVE }}" />
+			</div>
+		</form>
+
+		<div class="spacer2"></div>
+	</div>
+</div>
+{% endautoescape %}

@@ -1,0 +1,74 @@
+{#
+/**
+ *
+ *	@module			quickform
+ *	@version		see info.php of this module
+ *	@authors		LEPTON project
+ *	@copyright		2010-2024 LEPTON project
+ *	@license		GNU General Public License
+ *	@license terms	see info.php of this module
+ *	@platform		see info.php of this module
+ *
+ *
+ */
+ #}
+
+<!-- LepSem backend template for quickform view: TABLE -->
+
+	<table class='msgtable'>
+		<tr class="ui row" id="anchorall">
+			<th class="msgcol-id">{{ oQUICKFORM.language.COL_MSGID }}</th>
+			<th class="msgcol-data">{{ oQUICKFORM.language.COL_DATA }}</th>
+			<th class="msgcol-icon">
+		{% for act in msgactions %}
+				<button name="btn_{{ act.text|lower }}"
+						value="{{ act.text|lower }}_all"
+						type="submit"
+						{% if act.href is defined %}formaction="{{ act.href }}"{% endif %}
+						{% if act.onclick is defined %}onclick="{{ act.onclick|replace({'#msgid#': 'all' }) }}"{% endif %}
+						class="ui icon small basic button"
+						title="{{ MOD_QUICKFORM[ 'TT_' ~ act.text ~ '_ALL' ] }}"
+						data-tooltip="{{ MOD_QUICKFORM[ 'TT_' ~ act.text ~ '_ALL' ] }}"
+						data-position="top right"
+					><i class="ui icon {{ act.icon }}"></i></button>
+		{% endfor %}
+			</th>
+		</tr>
+
+		{% for sub in history %}
+			{% set trCycle = cycle(['odd', 'even'], loop.index) %}
+		<tr class="ui {{ trCycle }} row" id="anchor{{ sub.message_id }}">
+			<td class="msgcol-id">{{ sub.message_id }}</td>
+			<td class="msgcol-data">
+				<table>
+			{% for key, val in sub.msg_data %}
+					<tr>
+						<td class="msgcol-key">{{ key }}</td>
+						<td class="msgcol-val">{{ val }}</td>
+					</tr>
+			{% endfor %}
+					<tr>
+						<td class="msgcol-key msg msg_{{ sub.message_id }}"><i class="ui icon envelope red"></i></td>
+						<td class="msgcol-val">
+							<div class='msg msg_{{ sub.message_id }}'>{{ sub.data|raw }}</div>
+						</td>
+					</tr>
+				</table>
+			</td>
+			<td class="msgcol-icon">
+			{% for act in msgactions %}
+				<button name="btn_{{ act.text|lower }}"
+						value="{{ act.text|lower }}_{{ sub.message_id }}"
+						type="submit"
+						{% if act.href is defined %}formaction="{{ act.href }}"{% endif %}
+						{% if act.onclick is defined %}onclick="{{ act.onclick|replace({'#msgid#': sub.message_id }) }}"{% endif %}
+						class="ui icon small basic button"
+						title="{{ MOD_QUICKFORM[ 'TT_' ~ act.text ] }}"
+						data-tooltip="{{ MOD_QUICKFORM[ 'TT_' ~ act.text ] }}"
+						data-position="top right"
+					><i class="ui icon {{ act.icon }}"></i></button>
+			{% endfor %}
+			</td>
+		</tr>
+		{% endfor %}
+	</table>

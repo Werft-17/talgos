@@ -1,0 +1,289 @@
+{% autoescape false %}
+{#
+/**
+ *
+ *	@module			quickform
+ *	@version		see info.php of this module
+ *	@authors		LEPTON project
+ *	@copyright		2010-2024 LEPTON project
+ *	@license		GNU General Public License
+ *	@license terms	see info.php of this module
+ *	@platform		see info.php of this module
+ *
+ *
+ */
+ #}
+
+{# Defines the visibility and elements of the available views #}
+{% set viewlist = [{"code": "CLASSIC", "icon": "ENVELOPE"}, {"code": "TABLE", "icon": "TABLE"} ]%}
+
+{# Defines the visibility and elements of the message actions #}
+{% set msgactions = [
+	  { "text": "DELETEMSG","icon": "trash",		"onclick": "return deleteMessage('#msgid#');",	"href": urls.quickform }
+	, { "text": "MSGMOVE",	"icon": "archive green","onclick": "return showGroupMenu('#msgid#');" }
+	, { "text": "SHOWMAIL",	"icon": "envelope red",	"onclick": "return showMailContent('#msgid#');" }
+] %}
+
+<!-- Talgos backend template for quickform -->
+<form action="{{ urls.save }}" method="post"  >
+	<input type="hidden" name="page_id" value="{{ page_id }}" />
+	<input type="hidden" name="section_id" value="{{ section_id }}" />
+	<input type="hidden" name="grpcur"  value="{{ grpcur }}" />
+	<input type="hidden" name="rowcur"  value="{{ rowcur }}" />
+	<input type="hidden" name="viewcur" value="{{ viewcur }}" />
+	<input type="hidden" name="msgid"   id="msgid"  value="" />
+	<input type="hidden" name="grpnew"  id="grpnew" value="" />
+	<input type="hidden" name="anchor"  id="anchor" value="" />
+
+	<h2>{{ oQUICKFORM.language.QUICKFORM }} - {{ oQUICKFORM.language.SETTINGS }}</h2>
+	<div class="submenu">
+		<ul>
+			<li><a class="button" href="{{ urls.spamcheck }}">{{ oQUICKFORM.language.SPAMCHECK }}</a></li>
+			<li><a class="button" href="#" onclick="window.open('{{ urls.help }}','_blank');return false;">{{ MENU.HELP }}</a></li>
+			<li><a class="button" href="{{ LEPTON_URL }}/backend/modules/module_info.php">{{ TEXT.SHOW_MODINFO }}</a></li>
+		</ul>
+	</div>
+	<div class="qform">
+		<div class="pad_b">
+			<label>{{ oQUICKFORM.language.TEXT_FORM }}: </label>
+			<select name="template" required="required" >
+				<option value="0" {% if (settings.template == "") %}selected='selected'{% endif %}>{{ TEXT.PLEASE_SELECT }}</option>
+				{% for template in templatelist%}
+				<option value="{{ template }}" {% if (settings.template == template) %}selected='selected'{% endif %}>{{ template }}</option>
+				{% endfor %}
+			</select>
+			<div class="pad_t">
+				<button class="gw" name="btn_edittpl" value="edittpl" type="submit" formaction="{{ urls.edittpl }}">{{ oQUICKFORM.language.EDIT_TEMPLATE }}</button>
+			</div>
+		</div>
+		<div class="pad_b">
+			<label>{{ oQUICKFORM.language.TEXT_EMAIL }}: </label>
+			<input type="text" name="email" value="{{ settings.email }}" required="required"  class="textfield" />
+		</div>
+		<div class="pad_b">
+			<label>{{ oQUICKFORM.language.TEXT_SUBJECT }}: </label>
+			<input type="text" name="subject" value="{{ settings.subject }}" class="textfield" />
+		</div>
+		<div class="pad_b">
+			<label>{{  oQUICKFORM.language.TEXT_SUCCESS }}: </label>
+			<select name="successpage" required="required" />
+				<option value="0" {% if (settings.successpage == 0) %}selected='selected'{% endif %}>{{ oQUICKFORM.language.TEXT_NOPAGE }}</option>
+				{% for key, page_titel in pagelist %}
+				<option value="{{ key }}" {% if(settings.successpage==key) %}selected='selected'{% endif %}>{{ page_titel }}</option>
+				{% endfor %}
+			</select>
+		</div>
+	</div>
+	<input type="submit" name="submit" value="{{ TEXT.SAVE }}" class="add" />
+	<input type="reset" name="reset" onclick="javascript: window.location = 'index.php';" value="{{ TEXT.CANCEL }}" />
+
+{# show 1 button per group to show group items #}
+	<div class="ui row" id="anchorgroups">
+	{% set nbrItems = 0 %}
+	{% for grp in grplist %}
+		{% if grp.msg_group == grpcur %}{% set nbrItems = grp.nbr_items %}{% endif %}
+		<button name="btn_showgroup"
+				value="showgroup_{{ grp.msg_group }}"
+				type="submit"
+				formaction="{{ urls.quickform }}"
+				class="ui olive basic button lepsem_submit {% if grp.msg_group == grpcur %} active{% endif %}"
+			>{{ grp.msg_group }} ({{ grp.nbr_items }})</button>
+	{% endfor %}
+
+	{% if (not history == '') %}
+		<button name="btn_hidegroup"
+				value="hidegroup"
+				type="submit"
+				formaction="{{ urls.quickform }}"
+				class="ui olive basic button lepsem_submit"
+				title="{{ MOD_QUICKFORM[ 'TT_HIDE' ] }}"
+				data-tooltip="{{ MOD_QUICKFORM[ 'TT_HIDE' ] }}"
+				data-position="top left"
+			>X</button>
+	{% endif %}
+	</div>
+
+{# build only when group history is available #}
+{% if (not history == '') %}
+	<div class="ui msgdiv">
+
+		{# sidemenu for group change #}
+		<div class="sidemenu" id="sidemenu">
+			<div class="ui two columns stackable grid">
+				<div class="ui left aligned column">
+					<button name="btn_movemsg"
+							value="movemsg_#"
+							type="submit"
+							formaction="{{ urls.quickform }}"
+							onclick="return moveMessage('#');"
+							class="ui move"
+							title="{{ oQUICKFORM.language.TT_ADDGROUP }}"
+							data-tooltip="{{ oQUICKFORM.language.TT_ADDGROUP }}"
+							data-position="top right"
+						><i class="ui icon plus white"></i></button>
+				</div>
+				<div class="ui center aligned column">
+					<button name="btn_closemove"
+							value="closemove"
+							type="submit"
+							onclick="closeGroupMenu();return false;"
+							class="ui move"
+							title="{{ TEXT.CLOSE }}"
+							data-tooltip="{{ TEXT.CLOSE }}"
+							data-position="top right"
+						><i class="ui icon close red"></i></button>
+				</div>
+			</div>
+			<div class="spacer2"></div>
+			<ul>
+		{% for item in grplist %}
+				<li>
+					<button name="btn_movemsg"
+							value="movemsg_{{ item.msg_group }}"
+							type="submit"
+							formaction="{{ urls.quickform }}"
+							onclick="return moveMessage('{{ item.msg_group }}');"
+							class="ui move"
+							title="{{ oQUICKFORM.language.TT_MOVE2GROUP }}"
+							data-tooltip="{{ oQUICKFORM.language.TT_MOVE2GROUP }}"
+							data-position="top right"
+						><i class="ui icon circle {% if grpcur == item.msg_group %}blue{% else %}green{% endif %}"></i>{{ item.msg_group }}</button>
+				</li>
+		{% endfor %}
+			</ul>
+		</div>
+
+		{# group history header #}
+		<h4 class="ui center header">
+			{{ oQUICKFORM.language.RECEIVED }} : {{ grpcur }} ( {{ oQUICKFORM.language.NBRRECEIVED }} {% if nbrItems < rowcur %}{{ nbrItems }}{% else %}{{ rowcur }}{% endif %} {{ oQUICKFORM.language.NBRTOTAL }} {{ nbrItems }} )
+		</h4>
+
+		{# change number of items shown / change view #}
+		<div class="ui two columns stackable grid">
+			<div class="ui compact small buttons left aligned column">
+		{% for item in rowlist %}
+				<button name="btn_setrows"
+						value="setrows_{{ item }}"
+						type="submit"
+						formaction="{{ urls.quickform }}"
+						class="ui button {% if item == rowcur %} active{% endif %}"
+						title="{{ oQUICKFORM.language.TT_SETROWS }}"
+						data-tooltip="{{ oQUICKFORM.language.TT_SETROWS }}"
+						data-position="top left"
+					>{{ item }}</button>
+		{% endfor %}
+			</div>
+			<div class="ui compact small buttons right aligned column">
+		{% for item in viewlist %}
+				<button name="btn_changeview"
+						value="changeview_{{ item.code }}"
+						type="submit"
+						formaction="{{ urls.quickform }}"
+						class="ui button {% if item.code == viewcur %} active{% endif %}"
+						title="{{ MOD_QUICKFORM[ 'TT_VIEW_' ~ item.code] }}"
+						data-tooltip="{{ MOD_QUICKFORM[ 'TT_VIEW_' ~ item.code] }}"
+						data-position="top right"
+					><i class="{{ item.icon|lower }} icon"></i></button>
+		{% endfor %}
+			</div>
+		</div>
+
+		{# div for holding a delete dialog #}
+		<div id="dialog-confirm"></div>
+
+		{# list history items #}
+		{{ include('@quickform/modify_item_' ~ viewcur|upper  ~ '.lte' ) }}
+
+	</div>
+{% endif %}
+</form>
+
+<div>
+	<script type='text/javascript'>
+		var glob_message_id;
+
+		$(function() {
+			$('select[name=template]').on('change', function()
+			{
+				if ( this.value === '{{ settings.template }}' )
+				{
+					$('button[name=btn_edittpl]').removeClass( 'disabled' )
+				} else {
+					$('button[name=btn_edittpl]').addClass( 'disabled' )
+				}
+			});
+
+			$('.msgtable .msg').hide();
+
+			$('.msgtable td.line').click(function(){
+				$(this).children('.msg').slideToggle();
+			});
+
+			if ( '' !== '{{ anchor }}' )
+			{
+				$(document).scrollTop( $('#anchor{{ anchor }}').offset().top );
+			}
+		});
+		function showMailContent( message_id ) {
+			if ( message_id === 'all' ) {
+				$('.msg').slideToggle();
+			} else {
+				$('.msg_' + message_id ).slideToggle();
+			}
+			return false;
+		}
+
+		function showGroupMenu( message_id ) {
+			glob_message_id = message_id;
+
+			$('#anchor' + glob_message_id ).addClass( 'inverted segment' )
+			$('#sidemenu').addClass( 'responsive' )
+			$('#msgid').val('');
+			$('#grpnew').val('');
+			$('#anchor').val('');
+
+			return false;
+		}
+		function closeGroupMenu() {
+			$( '#anchor' + glob_message_id ).removeClass( 'inverted segment' )
+			$( '#sidemenu' ).removeClass( 'responsive' )
+			$('#msgid').val('');
+			$('#grpnew').val('');
+			$('#anchor').val('');
+
+			return false;
+		}
+		function moveMessage( grpnew ) {
+			// ask for a new group
+			if ( grpnew === '#' ) {
+				temp = prompt('{{ oQUICKFORM.language.ASK_ADDGROUP }}');
+				if (temp === null) {
+					return false;
+				}
+				grpnew = temp.replace(/[^a-z0-9]+|\s+/gmi, '_');
+			}
+
+			$('#msgid').val(glob_message_id);
+			$('#grpnew').val(grpnew);
+			$('#anchor').val('1');
+
+			return true;
+		}
+		function deleteMessage( message_id ) {
+			// init vars
+			$('#msgid').val('');
+			$('#grpnew').val('');
+			$('#anchor').val('');
+
+			// ask for delete confirmation
+			if (confirm('{{ oQUICKFORM.language.ASK_DELETEMSG }}')) {
+				$('#msgid').val(message_id);
+				return true;
+			}
+
+			// no delete confirmation
+			return false;
+		}
+	</script>
+</div>
+{% endautoescape %}

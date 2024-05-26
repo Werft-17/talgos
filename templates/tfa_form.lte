@@ -1,0 +1,83 @@
+{#
+/**
+ *	@template		Talgos Backend Theme
+ *	@version		see info.php of this template
+ *	@author			LEPTON project and others for Algos theme, LEPTON project for Talgos theme
+ *	@copyright		2010-2024 LEPTON Project 
+ *	@license		GNU General Public License
+ *	@license terms	see info.php of this template
+ *	@platform		see info.php of this template
+ */
+ #}
+{% autoescape false %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+	<head>
+		<title>{{ TEXT.TFA }}</title>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<meta http-equiv="content-language" content="en" />
+		<meta name="description" content="{{ TEXT.TFA }}" />
+		<meta name="keywords" content="{{ TEXT.TFA }}" />
+
+		<link href="{{ THEME_URL }}/css/login.css" rel="stylesheet" type="text/css" />
+		
+		{{ GET_PAGE_HEADERS }}
+		
+		<script type="text/javascript">
+			var THEME_URL = "{{ THEME_URL }}"
+		</script>
+
+	</head>
+
+	<body>
+		<div id="main_container">
+			<div class="login_form">
+				<h2>{{ TEXT.TFA }}</h2>
+				<div class="clear"></div>
+				<form class="talgos" action="{{ ACTION_URL }}" method="post" name="login">
+					<input type="hidden" name="token" value="{{ token }}">
+					
+						{% if new == true %}
+							<div class="positive message">
+								<h3 class="centered">{{ TEXT.TFA_NOTICE_I }}</h3>
+								<p style="text-align:center;">{{ TEXT.TFA_NOTICE_II }}</p> 
+								<p></p> 
+								<p class="pin">PIN: {{ pin }}</p>
+								{% for item, value in post_login %}
+									<input type="hidden" name="{{ item }}" value="{{ value }}" />
+								{% endfor %}								
+							</div>
+							<div class="spacer"></div>
+							<button class="submit" type="submit" name="save" value="{{ pin }}">{{ TEXT.TFA_BUTTON }}</button>	  
+						{% else  %}
+							<div class="segment">
+								<h3>{{ TEXT.TFA_NOTICE_III }}</h3>
+								<div class="spacer"> </div>
+								<div class="field">
+									<label for="pin"> PIN: </label>
+									<input class="login_input" type="text" name="pin" required>
+								</div>						
+							</div>
+							<div class="spacer"></div>
+							<button class="submit" type="submit" name="job" value="forward">{{ TEXT.TFA_NOTICE_VI }}</button>
+							{% if TFA == 'mail' %}
+								<button class="ui orange button" type="submit" name="job" value="resend">{{ TEXT.TFA_RESEND }}</button>
+							{% endif  %}	 						
+						{% endif  %}						
+				</form>
+			</div>
+
+			<div class="footer_login">
+				<div class="left_footer_login">
+					<a href=" https://lepton-cms.org" title="LEPTON CMS" target="_blank">LEPTON Core</a> is released under the
+					<a href="http://www.gnu.org/licenses/gpl.html" title="LEPTON Core is GPL" target="_blank">GNU General Public License</a>.
+				</div>
+				<div class="left_footer_login">
+					<a href=" https://lepton-cms.org" title="LEPTON Package" target="_blank">LEPTON CMS Package</a> is released under several different licenses.
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
+{% endautoescape %}	

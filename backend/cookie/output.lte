@@ -1,0 +1,95 @@
+{#
+/**
+ * @module          Cookie
+ * @author          cms-lab
+ * @copyright       2010-2024 cms-lab
+ * @link            https://cms-lab.com
+ * @license         custom license: https://cms-lab.com/_documentation/cookie/license.php
+ * @license_terms   see: https://cms-lab.com/_documentation/cookie/license.php
+ *
+ */
+ #}
+ 
+{% autoescape false %}
+<link rel="stylesheet" type="text/css" href="{{ oCOOKIE.cookie_css }}" />
+<script src="{{ oCOOKIE.cookie_js }}"></script>
+<script>
+window.addEventListener("load", function(){
+	window.cookieconsent.initialise({
+	'revokeBtn': '<div class="cc-revoke {{ js_class }}">{{ oCOOKIE.language.policy_link }}</div>',	
+	  "palette": {
+		"popup": {
+		  "background": "{{ oCOOKIE.cookie_settings.pop_bg }}",
+		  "text": "{{ oCOOKIE.cookie_settings.pop_text }}"
+		},
+		"button": {
+		  "background": "{{ oCOOKIE.cookie_settings.but_bg }}",
+		  "text": "{{ oCOOKIE.cookie_settings.but_text }}",
+		  "border": "{{ oCOOKIE.cookie_settings.but_border }}"
+		}
+	  },
+	  "theme": "{{ oCOOKIE.cookie_settings.layout }}",
+	  {% if oCOOKIE.cookie_settings.href == '' %}"showLink": false,{% else %}{% endif %}	  
+	  {% if oCOOKIE.cookie_settings.position == 'top_down' %}
+		"position": "top",
+		"static": true,
+	  {% else %}
+		"position": "{{ oCOOKIE.cookie_settings.position }}", 
+	  {% endif %}	
+
+    {% if oCOOKIE.cookie_settings.type == 'show' %}
+
+    {% else %}
+    "type": "{{ oCOOKIE.cookie_settings.type }}",
+	// set cookies referred to user action
+        onInitialise: function (status) {
+          var type = this.options.type;
+          var didConsent = this.hasConsented();
+          if (type == 'opt-in' && didConsent) {
+            navigator.cookieEnabled == true       // enable cookies
+          }
+          if (type == 'opt-out' && !didConsent) {
+            navigator.cookieEnabled == false      // disable cookies
+          }
+        },
+ 
+        onStatusChange: function(status, chosenBefore) {
+          var type = this.options.type;
+          var didConsent = this.hasConsented();
+          if (type == 'opt-in' && didConsent) {
+            navigator.cookieEnabled == true       // enable cookies
+          }
+          if (type == 'opt-out' && !didConsent) {
+            navigator.cookieEnabled == false    // disable cookies
+          }
+        },
+ 
+        onRevokeChoice: function() {
+          var type = this.options.type;
+          if (type == 'opt-in') {
+            navigator.cookieEnabled == false     // disable cookies
+          }
+          if (type == 'opt-out') {
+            navigator.cookieEnabled == true      // enable cookies
+          }
+        },
+	// end	 		
+	{% endif %}
+	  "content": {
+		"message": "{% if oCOOKIE.cookie_settings.overwrite == 0 %}{{ oCOOKIE.language.message }}{% else %}{{ oCOOKIE.cookie_settings.message }}{% endif %}",
+		"dismiss": "{% if oCOOKIE.cookie_settings.overwrite == 0 %}{{ oCOOKIE.language.dismiss }}{% else %}{{ oCOOKIE.cookie_settings.dismiss  }}{% endif %}",
+		"allow": "{% if oCOOKIE.cookie_settings.overwrite == 0 %}{{ oCOOKIE.language.allow }}{% else %}{{ oCOOKIE.cookie_settings.allow  }}{% endif %}",
+		"deny": "{% if oCOOKIE.cookie_settings.overwrite == 0 %}{{ oCOOKIE.language.deny }}{% else %}{{ oCOOKIE.cookie_settings.deny  }}{% endif %}",
+		{% if oCOOKIE.cookie_settings.href == '' %}{% else %}			 
+			{% if oCOOKIE.cookie_settings.overwrite == 0 %}
+				"link": "{{ oCOOKIE.language.learn_more  }}",
+			{% else %}
+				"link": "{{ oCOOKIE.cookie_settings.link  }}",
+			{% endif %}
+		{% endif %}
+		{% if oCOOKIE.cookie_settings.href == '' %}{% else %}"href": "{{ oCOOKIE.cookie_settings.href }}"{% endif %}
+	  }
+	})
+});
+</script>
+{% endautoescape %}
