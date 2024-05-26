@@ -312,13 +312,16 @@
 					<td class="setting_value" colspan="3">
 						<input type="radio" name="tfa" id="tfa_local" value="local" {% if('local' == TFA) %}checked='checked'{% endif %} />
 						<label for="tfa_one">{{ TEXT.TFA_TYPE_LOCAL }}</label>
+						
 						<input type="radio" name="tfa" id="tfa_none" value="none" {% if('none' == TFA) %}checked='checked'{% endif %} />
 						<label for="tfa_zero">{{ TEXT.TFA_TYPE_NO }}</label>				
+						
 						<input type="radio" name="tfa" id="tfa_mail" value="mail" {% if('mail' == TFA) %}checked='checked'{% endif %} />
 						<label for="tfa_two">{{ TEXT.TFA_TYPE_MAIL }}</label>				
 						<b>{{ TEXT.TFA_NOTICE_II }}</b>
 					</td>
-				</tr>		
+				</tr>
+					
 				<tr>
 					<td>&nbsp;</td>
 					<td>&nbsp;</td>

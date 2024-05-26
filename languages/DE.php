@@ -4,7 +4,7 @@
  *  @template       Talgos Backend-Theme
  *  @version        see info.php of this template
  *  @author         LEPTON project and others for Algos theme, LEPTON project for Talgos theme
- *	@copyright      2010-2024 LEPTON Project
+ *  @copyright      2010-2024 LEPTON Project
  *  @license        GNU General Public License
  *  @license terms  see info.php of this template
  *
