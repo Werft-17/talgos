@@ -12,7 +12,7 @@
 {% autoescape false %}
 <div class="start">
 	<div class="welcome_message">
-		{{ WELCOME_MESSAGE }}. {{ CURRENT_USER }} {{ DISPLAY_NAME }}.
+		{{ MESSAGE.START_WELCOME_MESSAGE }}. {{ MESSAGE.START_CURRENT_USER }} {{ DISPLAY_NAME }}.
 	</div>
 	{% if WARNING != '' %}
 		<div style="color: #f00; font-weight: bold; padding:20px;">

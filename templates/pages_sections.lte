@@ -10,7 +10,7 @@
  */
  #}
 {% autoescape false %}
-
+<h3>Talgos</h3>
 <div class=" container">
 	<div class="jsadmin jcalendar hide"></div>
 	<h2>{{ HEADING.MANAGE_SECTIONS }}</h2>

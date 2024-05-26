@@ -66,10 +66,6 @@ $admin = LEPTON_admin::getInstance();
 	// Get display name of person who last modified the page
 	$user = $admin->get_user_details($current_page['modified_by']);
 
-	// Convert the unix ts for modified_when to human a readable form
-	$modified_ts = ($current_page['modified_when'] != 0)
-		? $modified_ts = date(TIME_FORMAT.', '.DATE_FORMAT, $current_page['modified_when'])
-		: 'Unknown' ;
 
 //	Get all pages as (array-) tree
 LEPTON_handle::register( "page_tree" );
@@ -178,32 +174,30 @@ else
 
 // Collect vars
 $page_values = [
-	 'page'					=> $current_page
-	,'MODIFIED_BY'			=> $user['display_name']
-	,'MODIFIED_BY_USERNAME' => $user['username']
-	,'MODIFIED_WHEN'		=> $modified_ts
-	,'SEC_ANCHOR'			=> SEC_ANCHOR
-	,'MANAGE_SECTIONS'		=> MANAGE_SECTIONS
-	,'leptoken'				=> get_leptoken()
-	,'last_edit_section'	=> $_SESSION['last_edit_section']
-	,'allowedPageSettings'	=> ( (false == $bHasAdminPrivilegs) ? LEPTON_admin::getUserPermission("page_settings") : true )
-	,'all_pages'			=> $all_pages
-	,'all_sections'			=> $all_sections
-	,'display_details'		=> $display_details
+    'page'                  => $current_page,
+    'MODIFIED_BY'           => $user['display_name'],
+    'MODIFIED_BY_USERNAME'  => $user['username'],
+    'MODIFIED_WHEN'         => talgos::formatTime($current_page['modified_when']),
+    'SEC_ANCHOR'            => SEC_ANCHOR,
+    'MANAGE_SECTIONS'       => MANAGE_SECTIONS,
+    'leptoken'              => get_leptoken(),
+    'last_edit_section'     => $_SESSION['last_edit_section'],
+    'allowedPageSettings'   => ( (false == $bHasAdminPrivilegs) ? LEPTON_admin::getUserPermission("page_settings") : true ),
+    'all_pages'             => $all_pages,
+    'all_sections'          => $all_sections,
+    'display_details'       => $display_details
 ];
 
 // TALGOS enhancement
 $oTALG = talgos::getInstance();
 $page_values['oTALG'] = $oTALG;
 
-
 // get TWIG engine
 $oTWIG = lib_twig_box::getInstance();
 
-
 echo $oTWIG->render(
-	"@theme/pages_modify.lte",
-	$page_values
+    "@theme/pages_modify.lte",
+    $page_values
 );
 
 $admin->print_footer();

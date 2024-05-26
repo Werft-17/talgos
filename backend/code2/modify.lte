@@ -1,0 +1,22 @@
+{% autoescape false %}
+<h3>Talgos</h3>
+<!-- Output by Twig -->
+<form name="codeform{{ SECTION_ID }}" id="codeform{{ SECTION_ID }}" class="whatis_{{ WHATIS }}_{{ SECTION_ID }}" action="{{ LEPTON_URL }}/modules/code2/save.php" method="post">
+	<input type="hidden" name="page_id" value="{{ PAGE_ID }}" />
+	<input type="hidden" name="section_id" value="{{ SECTION_ID }}" />
+	<input type="hidden" name="code2_hash" value="{{ CODE2_HASH }}" />
+	{% if (codemirror_theme_select != "") %}{{ codemirror_theme_select }}{% endif %}
+	<div class="section_info">
+		{{ MOD_CODE2.language.TYPE }}: <select name="whatis" onchange="code2_change_code({{ SECTION_ID }});">{{ WHATISSELECT }}</select>
+		<span style="margin-left:20px">
+			{{ MOD_CODE2.language.MODE }}:
+			<select name="mode" onchange="code2_change_mode({{ SECTION_ID }},this);" id="code2_mode_{{ SECTION_ID }}">{{ MODE }}</select>
+		</span>
+	</div>
+	<div class="ui red message">{{ MOD_CODE2.module_description }}</div>
+	<textarea id="no_wysiwyg" name="content" class="content_{{ WHATIS }} {% if(MODE == 0) %}code2_smart{% else %}code2_full{% endif %}" style="margin-top:5px;width:100%;" rows="0" cols="0">{{ CONTENT }}</textarea>
+	<button class="menubutton_save" type="submit">{{ TEXT.SAVE }}</button>
+	<button class="menubutton_reset" type="reset" onclick="javascript: window.location = 'index.php';">{{ TEXT.CANCEL }}</button>
+</form>
+<!-- end Twig -->
+{% endautoescape %}

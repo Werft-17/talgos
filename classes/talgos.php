@@ -40,4 +40,11 @@ class talgos extends LEPTON_template
             $this->setRememberState( $ref['subpages'] );
         }
     }
+    
+    public static function formatTime(int $iUnixTimeStamp): string
+    {
+        return ($iUnixTimeStamp != 0)
+	        ? date(DATE_FORMAT." – ".TIME_FORMAT, $iUnixTimeStamp)
+	        : 'Unknown'	;
+    }
 }

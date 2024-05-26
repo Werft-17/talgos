@@ -47,7 +47,7 @@ global $TEXT, $MESSAGE, $OVERVIEW, $MENU, $THEME;
 global $is_uptodate, $latest_release, $version_info;
 
 // Check if install directory is deleted
-if ( file_exists(LEPTON_PATH.'/install/') )  
+if (file_exists(LEPTON_PATH.'/install/') )  
 {
 	$warning = LEPTON_tools::display('<br  />'.$THEME['NOTICE'].'<br  />'.$MESSAGE['START_INSTALL_DIR_EXISTS'].'<br />','pre','warning');
 } 
@@ -61,33 +61,33 @@ else
 $addons_overview = $TEXT['MANAGE'].' ';
 $addons_count = 0;
 
-if($admin->get_permission('modules') == true)
+if ($admin->get_permission('modules') == true)
 {
 	$addons_overview .= '<a href="'.ADMIN_URL.'/modules/index.php">'.$MENU['MODULES'].'</a>';
 	$addons_count = 1;
 }
 
-if($admin->get_permission('templates') == true)
+if ($admin->get_permission('templates') == true)
 {
 	if($addons_count == 1) { $addons_overview .= ', '; }
 	$addons_overview .= '<a href="'.ADMIN_URL.'/templates/index.php">'.$MENU['TEMPLATES'].'</a>';
 	$addons_count = 1;
 }
 
-if($admin->get_permission('languages') == true)
+if ($admin->get_permission('languages') == true)
 {
-	if($addons_count == 1) { $addons_overview .= ', '; }
+	if ($addons_count == 1) { $addons_overview .= ', '; }
 	$addons_overview .= '<a href="'.ADMIN_URL.'/languages/index.php">'.$MENU['LANGUAGES'].'</a>';
 }
 
 // Insert "Access" section overview (pretty complex compared to normal)
 $access_overview = $TEXT['MANAGE'].' ';
 $access_count = 0;
-if($admin->get_permission('users') == true) {
+if ($admin->get_permission('users') == true) {
 	$access_overview .= '<a href="'.ADMIN_URL.'/users/index.php">'.$MENU['USERS'].'</a>';
 	$access_count = 1;
 }
-if($admin->get_permission('groups') == true) {
+if ($admin->get_permission('groups') == true) {
 	if($access_count == 1) { $access_overview .= ', '; }
 	$access_overview .= '<a href="'.ADMIN_URL.'/groups/index.php">'.$MENU['GROUPS'].'</a>';
 	$access_count = 1;
@@ -99,18 +99,18 @@ if ($is_uptodate == false)
 }
 
 $page_values = [
-	'WELCOME_MESSAGE' => $MESSAGE['START_WELCOME_MESSAGE'],
-	'CURRENT_USER' => $MESSAGE['START_CURRENT_USER'],
-	'DISPLAY_NAME' => $admin->getValue('display_name', 'string', 'session'),
-	'ADMIN_URL' => ADMIN_URL,
-	'LEPTON_URL' => LEPTON_URL,
-	'THEME_URL' => THEME_URL,
-	'NO_CONTENT' => '<p>&nbsp;</p>',
-	'WARNING' => $warning,
-	'LEPTON' => $lepton_release ?? '',	
+//	'WELCOME_MESSAGE' => $MESSAGE['START_WELCOME_MESSAGE'],
+//	'CURRENT_USER' => $MESSAGE['START_CURRENT_USER'],
+	'DISPLAY_NAME'  => $admin->getValue('display_name', 'string', 'session'),
+	'ADMIN_URL'     => ADMIN_URL,
+	'LEPTON_URL'    => LEPTON_URL,
+	'THEME_URL'     => THEME_URL,
+	'NO_CONTENT'    => '<p>&nbsp;</p>',
+	'WARNING'       => $warning,
+	'LEPTON'        => $lepton_release ?? '',	
 	// only with access
-	'PHP' => $THEME['PHP_VERSION'],
-	'PHP_INFO' => $THEME['PHP_INFO'],
+	'PHP'           => $THEME['PHP_VERSION'],
+	'PHP_INFO'      => $THEME['PHP_INFO'],
 	'PHP_NO' => PHP_VERSION,
 	'PAGES' => $MENU['PAGES'],
 	'MEDIA' => $MENU['MEDIA'],

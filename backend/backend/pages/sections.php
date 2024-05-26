@@ -73,7 +73,7 @@ if( isset($_POST['job']) )
 }
 
 // Check page id
-if ( $page_id < 0 )
+if ($page_id < 0)
 {
 	header("Location: index.php");
 	exit(0);
@@ -84,7 +84,7 @@ else
 	$current_page = [];
 	$sql = "SELECT * from `".TABLE_PREFIX."pages` where `page_id` = ".$page_id;
 	$database->execute_query( $sql, true, $current_page, false );
-	if ( empty($current_page) )
+	if (empty($current_page))
 	{
 		header("Location: index.php");
 		exit(0);
@@ -95,7 +95,7 @@ else
 	{
 		$temp_result = [];
 		$sql = "SELECT `section_id` from `".TABLE_PREFIX."sections` where `page_id` = ".$page_id." and `section_id` = ".$section_id;
-		$dbsuccess = $database->execute_query( $sql, true, $temp_result, false );
+		$database->execute_query( $sql, true, $temp_result, false );
 		if (empty($temp_result) )
 		{
 			header("Location: index.php");
@@ -115,11 +115,14 @@ $MESSAGE = LEPTON_core::getGlobal("MESSAGE");
 $bHasAdminPrivilegs = LEPTON_admin::userHasAdminRights();
 
 // Job processing
-switch( $job )
+switch ($job)
 {
 	case "delete":
 		// nothing to do if section is missing
-		if ( $section_id < 0 )	{ break; }
+		if ($section_id < 0)
+		{
+		    break;
+		}
 
 		// get section defaults
 		$section_info = [];
@@ -163,7 +166,10 @@ switch( $job )
 
 	case "add":
 		// nothing to do if section is missing
-		if ( $addon_id < 0 )	{ break; }
+		if ($addon_id < 1)
+		{
+		    break;
+		}
 
 		// Is the module addon-id valide? Or in other words: does the module(-name) exists?
 		$temp_result = [];
@@ -174,7 +180,7 @@ switch( $job )
 			false 
 		);
 		
-		if (empty($temp_result) )
+		if (empty($temp_result))
 		{
 			$admin->print_error($MESSAGE['GENERIC_MODULE_VERSION_ERROR']." [1]");
 		}
@@ -183,7 +189,7 @@ switch( $job )
 		unset($temp_result);
 
 		// Got the current user the rights to "use" this module?
-		if ( (false === $bHasAdminPrivilegs) && (false === in_array($module, $_SESSION['MODULE_PERMISSIONS'] )) )
+		if ((false === $bHasAdminPrivilegs) && (false === in_array($module, $_SESSION['MODULE_PERMISSIONS'])))
 		{
 			$admin->print_error($MESSAGE['GENERIC_NOT_UPGRADED']." [2]");
 		}
@@ -208,9 +214,9 @@ switch( $job )
 
 		// Call "add.php" of the module
 		$look_for_path = LEPTON_PATH.'/modules/'.$module.'/add.php';
-		if ( file_exists($look_for_path))
+		if (file_exists($look_for_path))
 		{
-			require( $look_for_path );
+			require $look_for_path;
 		}
 
 		break;
@@ -219,11 +225,6 @@ switch( $job )
 
 // Get display name of person who last modified the page
 $user = $admin->get_user_details($current_page['modified_by']);
-
-// Convert the unix ts for modified_when to human readable form
-$modified_ts = ($current_page['modified_when'] != 0)
-	? date(TIME_FORMAT.', '.DATE_FORMAT, $current_page['modified_when'])
-	: 'Unknown'	;
 
 // Get permissions
 $admin_groups = explode(',', $current_page['admin_groups']);
@@ -323,7 +324,7 @@ $page_vars = [
 	 'page'					=> $current_page,
 	 'MODIFIED_BY'			=> $user['display_name'],
 	 'MODIFIED_BY_USERNAME' => $user['username'],
-	 'MODIFIED_WHEN'		=> $modified_ts,
+	 'MODIFIED_WHEN'		=> talgos::formatTime($current_page['modified_when']),
 	 'SEC_ANCHOR'			=> SEC_ANCHOR,
 	 'SECTION_BLOCKS'		=> SECTION_BLOCKS,
 	 'show_add'				=> $show_add,	 

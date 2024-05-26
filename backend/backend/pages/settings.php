@@ -85,12 +85,6 @@ if($in_group == false)
 // Get display name of person who last modified the page
 $user=$admin->get_user_details($aCurrentPageInfo['modified_by']);
 
-// Convert the unix ts for modified_when to human a readable form
-$modified_ts = ($aCurrentPageInfo['modified_when'] != 0)
-	? date(TIME_FORMAT.', '.DATE_FORMAT, $aCurrentPageInfo['modified_when'])
-	: 'Unknown'	;
-
-
 $lepton_core_all_groups = [];
 $database->execute_query(
 	'SELECT * FROM `'.TABLE_PREFIX.'groups`',
@@ -148,7 +142,7 @@ $page_values = array(
 	'PAGE_ID' 	=> $page_id,
 	'aCurrentPageInfo'	=> $aCurrentPageInfo,
 	'page_values'	=> $aCurrentPageInfo, // !
-	
+	'page'          => $aCurrentPageInfo, // !
 	'page_link'		=> substr($aCurrentPageInfo['link'],strripos($aCurrentPageInfo['link'],'/')+1),
 	'PAGE_EXTENSION'=> PAGE_EXTENSION,
 	'LANGUAGE' 		=> LANGUAGE,
@@ -165,7 +159,7 @@ $page_values = array(
     'PAGE_CODE' => $aCurrentPageInfo['page_code'],
 	'MODIFIED_BY' => $user['display_name'],
 	'MODIFIED_BY_USERNAME' => $user['username'],
-	'MODIFIED_WHEN' => $modified_ts,
+	'MODIFIED_WHEN' => talgos::formatTime($aCurrentPageInfo['modified_when']),
 	'PAGE_LANGUAGE' => $aCurrentPageInfo['language']	
 );
 
